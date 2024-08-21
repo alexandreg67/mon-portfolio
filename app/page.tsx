@@ -1,4 +1,14 @@
+'use client';
+
+import { useState } from 'react';
+import ContactModal from './components/ContactModal';
+
 export default function HomePage() {
+	const [isModalOpen, setIsModalOpen] = useState(false);
+
+	const openModal = () => setIsModalOpen(true);
+	const closeModal = () => setIsModalOpen(false);
+
 	return (
 		<div className="flex flex-col items-center justify-center px-4 md:px-8">
 			<h1 className="text-5xl font-headline mb-4 text-center">
@@ -7,9 +17,13 @@ export default function HomePage() {
 			<p className="text-xl font-body text-textSecondary text-center">
 				Découvrez mes projets et contactez-moi pour collaborer !
 			</p>
-			<button className="mt-6 px-6 py-3 bg-primary text-white font-bold rounded shadow-custom-dark hover:bg-secondary transition duration-300">
+			<button
+				onClick={openModal}
+				className="mt-6 px-6 py-3 bg-primary text-white font-bold rounded shadow-custom-dark hover:bg-secondary transition duration-300"
+			>
 				Me Contacter
 			</button>
+			<ContactModal isOpen={isModalOpen} onClose={closeModal} />
 		</div>
 	);
 }

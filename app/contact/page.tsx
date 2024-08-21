@@ -1,7 +1,15 @@
+'use client';
+
+import { useState } from 'react';
+import ContactModal from '../components/ContactModal';
 import { FaLinkedin, FaGithub } from 'react-icons/fa';
-import Image from 'next/image';
 
 export default function ContactPage() {
+	const [isModalOpen, setIsModalOpen] = useState(false);
+
+	const openModal = () => setIsModalOpen(true);
+	const closeModal = () => setIsModalOpen(false);
+
 	return (
 		<section className="min-h-screen px-4 sm:px-6 md:px-8 lg:px-10 flex flex-col items-center justify-center  text-textPrimary">
 			<div className="max-w-3xl w-full text-center px-6 sm:px-8 md:px-12">
@@ -17,7 +25,7 @@ export default function ContactPage() {
 					href="mailto:alexandre.ag.67@gmail.com"
 					className="text-xl font-bold text-primary hover:text-secondary transition duration-300 mb-8 block"
 				>
-					alexandre.ag.67@gmail.com
+					alexgraff67@gmail.com
 				</a>
 				<div className="flex justify-center space-x-6 mb-8">
 					<a
@@ -51,9 +59,13 @@ export default function ContactPage() {
             />
           </a> */}
 				</div>
-				<button className="mt-6 px-6 py-3 bg-primary text-white font-bold rounded shadow-custom-dark hover:bg-secondary transition duration-300">
+				<button
+					onClick={openModal}
+					className="mt-6 px-6 py-3 bg-primary text-white font-bold rounded shadow-custom-dark hover:bg-secondary transition duration-300"
+				>
 					Me Contacter
 				</button>
+				<ContactModal isOpen={isModalOpen} onClose={closeModal} />
 			</div>
 		</section>
 	);
