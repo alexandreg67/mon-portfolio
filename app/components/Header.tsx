@@ -15,43 +15,46 @@ const Header: React.FC = () => {
 	return (
 		<header className="bg-hero-gradient text-white shadow-custom-dark">
 			<div className="container mx-auto flex justify-between items-center py-4 px-6">
-				<a href="/" className="text-3xl font-headline">
+				<Link href="/" className="text-3xl font-headline">
 					Graff Alexandre
-				</a>
+				</Link>
 				<nav className="hidden lg:flex space-x-8">
-					<a href="/" className="hover:text-secondary transition duration-300">
+					<Link
+						href="/"
+						className="hover:text-secondary transition duration-300"
+					>
 						Accueil
-					</a>
-					<a
+					</Link>
+					<Link
 						href="/formations"
 						className="hover:text-secondary transition duration-300"
 					>
 						Formations
-					</a>
-					<a
+					</Link>
+					<Link
 						href="/competences"
 						className="hover:text-secondary transition duration-300"
 					>
 						Compétences
-					</a>
-					<a
+					</Link>
+					<Link
 						href="/about"
 						className="hover:text-secondary transition duration-300"
 					>
 						À propos
-					</a>
-					<a
+					</Link>
+					<Link
 						href="/projects"
 						className="hover:text-secondary transition duration-300"
 					>
 						Projets
-					</a>
-					<a
+					</Link>
+					<Link
 						href="/contact"
 						className="hover:text-secondary transition duration-300"
 					>
 						Contact
-					</a>
+					</Link>
 				</nav>
 				<div className="lg:hidden">
 					<button
@@ -112,36 +115,42 @@ const Header: React.FC = () => {
 					<Link
 						href="/"
 						className="hover:text-secondary transition duration-300"
+						onClick={closeMenu}
 					>
 						Accueil
 					</Link>
 					<Link
 						href="/formations"
 						className="hover:text-secondary transition duration-300"
+						onClick={closeMenu}
 					>
 						Formations
 					</Link>
 					<Link
 						href="/competences"
 						className="hover:text-secondary transition duration-300"
+						onClick={closeMenu}
 					>
 						Compétences
 					</Link>
 					<Link
 						href="/about"
 						className="hover:text-secondary transition duration-300"
+						onClick={closeMenu}
 					>
 						À propos
 					</Link>
 					<Link
 						href="/projects"
 						className="hover:text-secondary transition duration-300"
+						onClick={closeMenu}
 					>
 						Projets
 					</Link>
 					<Link
 						href="/contact"
 						className="hover:text-secondary transition duration-300"
+						onClick={closeMenu}
 					>
 						Contact
 					</Link>
