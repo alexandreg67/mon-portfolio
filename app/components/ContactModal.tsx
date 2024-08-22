@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface ContactModalProps {
 	isOpen: boolean;
@@ -11,8 +13,12 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
 	const [email, setEmail] = useState('');
 	const [message, setMessage] = useState('');
 
+	// const notify = () => toast.success('Message envoyé avec succès !');
+
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
+		const toastId = toast.loading('Envoi en cours...');
+
 		try {
 			const res = await fetch('/api/contact', {
 				method: 'POST',
@@ -23,14 +29,30 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
 			});
 
 			if (res.ok) {
-				alert('Votre message a été envoyé avec succès');
+				toast.update(toastId, {
+					render: 'Message envoyé avec succès !',
+					type: 'success',
+					isLoading: false,
+					autoClose: 5000,
+				});
+
 				onClose();
 			} else {
-				alert("Une erreur est survenue lors de l'envoi du message");
+				toast.update(toastId, {
+					render: "Erreur lors de l'envoi du message.",
+					type: 'error',
+					isLoading: false,
+					autoClose: 5000,
+				});
 			}
 		} catch (error) {
 			console.error('Failed to send message:', error);
-			alert("Erreur lors de l'envoi du message");
+			toast.update(toastId, {
+				render: "Erreur lors de l'envoi du message.",
+				type: 'error',
+				isLoading: false,
+				autoClose: 5000,
+			});
 		}
 	};
 
@@ -45,6 +67,8 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
 						type="text"
 						placeholder="Prénom"
 						value={firstName}
+						id="firstName"
+						autoComplete="given-name"
 						onChange={(e) => setFirstName(e.target.value)}
 						className="input input-bordered w-full mb-4 text-textPrimary bg-backgroundStart placeholder-textSecondary"
 						required
@@ -53,6 +77,8 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
 						type="text"
 						placeholder="Nom"
 						value={lastName}
+						id="lastName"
+						autoComplete="family-name"
 						onChange={(e) => setLastName(e.target.value)}
 						className="input input-bordered w-full mb-4 text-textPrimary bg-backgroundStart placeholder-textSecondary"
 						required
@@ -61,6 +87,8 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
 						type="email"
 						placeholder="Email"
 						value={email}
+						id="email"
+						autoComplete="email"
 						onChange={(e) => setEmail(e.target.value)}
 						className="input input-bordered w-full mb-4 text-textPrimary bg-backgroundStart placeholder-textSecondary"
 						required
@@ -68,6 +96,8 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
 					<textarea
 						placeholder="Votre message"
 						value={message}
+						id="message"
+						autoComplete="off"
 						onChange={(e) => setMessage(e.target.value)}
 						className="textarea textarea-bordered w-full mb-4 text-textPrimary bg-backgroundStart placeholder-textSecondary"
 						required
@@ -75,16 +105,21 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
 					<button type="submit" className="btn bg-primary text-white w-full">
 						Envoyer
 					</button>
+					{/* <button onClick={notify}>Tester Toast</button> */}
 				</form>
 				<button
 					onClick={onClose}
 					className="btn bg-secondary text-white mt-4 w-full"
 				>
-					Fermer
+					Annuler
 				</button>
+				<ToastContainer />
 			</div>
 		</div>
 	);
 };
 
 export default ContactModal;
+function async(ok: boolean) {
+	throw new Error('Function not implemented.');
+}
