@@ -35,7 +35,6 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
 					isLoading: false,
 					autoClose: 5000,
 				});
-
 				onClose();
 			} else {
 				toast.update(toastId, {
