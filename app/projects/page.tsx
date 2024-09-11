@@ -33,7 +33,7 @@ const games: Project[] = [
 			"Un jeu de Puissance 4 développé avec Next.js et React, intégrant une intelligence artificielle pour jouer contre l'utilisateur.",
 		technologies: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS'],
 		imageUrl: '/puissance4.png',
-		// liveLink: 'https://username.github.io/puissance4',
+		liveLink: 'https://username.github.io/puissance4',
 		codeLink: 'https://github.com/alexandreg67/puissance4_react.git',
 	},
 ];
