@@ -33,7 +33,6 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
 					render: 'Message envoyé avec succès !',
 					type: 'success',
 					isLoading: false,
-					autoClose: 5000,
 				});
 				onClose();
 			} else {
@@ -58,6 +57,7 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
 	if (!isOpen) return null;
 
 	return (
+		
 		<div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
 			<div className="bg-hero-gradient text-textPrimary rounded-lg shadow-custom-light p-6 w-full max-w-md">
 				<h2 className="text-2xl font-bold text-center mb-4">Contactez-moi</h2>

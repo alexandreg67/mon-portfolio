@@ -7,7 +7,7 @@ type Project = {
 	description: string;
 	technologies: string[];
 	imageUrl: string;
-	liveLink: string;
+	liveLink?: string;
 	codeLink: string;
 };
 
@@ -19,8 +19,9 @@ const projects: Project[] = [
 			'Un portfolio personnel créé avec Next.js et Tailwind CSS, mettant en avant mes compétences et mes projets. Ce site est entièrement responsive, optimisé pour le SEO, et utilise des composants réutilisables pour une maintenance facile.',
 		technologies: ['Next.js', 'React', 'Tailwind CSS'],
 		imageUrl: '/portfolio.png',
-		liveLink: 'https://username.github.io/portfolio',
-		codeLink: 'https://github.com/username/portfolio',
+		liveLink:
+			'https://mon-portfolio-8v7akcc0q-alexandres-projects-214ab778.vercel.app/',
+		codeLink: 'https://github.com/alexandreg67/mon-portfolio.git',
 	},
 ];
 
@@ -31,9 +32,9 @@ const games: Project[] = [
 		description:
 			"Un jeu de Puissance 4 développé avec Next.js et React, intégrant une intelligence artificielle pour jouer contre l'utilisateur.",
 		technologies: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS'],
-		imageUrl: '/images/puissance4.png',
-		liveLink: 'https://username.github.io/puissance4',
-		codeLink: 'https://github.com/username/puissance4',
+		imageUrl: '/puissance4.png',
+		// liveLink: 'https://username.github.io/puissance4',
+		codeLink: 'https://github.com/alexandreg67/puissance4_react.git',
 	},
 ];
 
