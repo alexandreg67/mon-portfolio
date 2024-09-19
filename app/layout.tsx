@@ -1,17 +1,23 @@
-'use client';
-
 import './globals.css';
-import { usePathname } from 'next/navigation';
 import Header from './components/Header';
-import Footer from './components/Footer';
+import ClientFooter from './components/ClientFooter';
+
+export const metadata = {
+	title: 'Portfolio de Développeur Web - Alexandre Graff',
+	description:
+		'Bienvenue sur mon portfolio de développeur web spécialisé en Next.js, React, et Tailwind CSS. Découvrez mes projets et contactez-moi pour collaborer.',
+};
+
+export const viewport = {
+	width: 'device-width',
+	initialScale: 1,
+};
 
 export default function RootLayout({
 	children,
 }: {
 	children: React.ReactNode;
 }) {
-	const pathname = usePathname();
-
 	return (
 		<html lang="fr">
 			<body className="min-h-screen flex flex-col bg-gradient-to-r from-backgroundStart to-backgroundEnd text-textPrimary">
@@ -19,7 +25,7 @@ export default function RootLayout({
 				<main className="flex-grow flex flex-col items-center justify-center">
 					{children}
 				</main>
-				{pathname === '/' && <Footer />}
+				<ClientFooter />
 			</body>
 		</html>
 	);
