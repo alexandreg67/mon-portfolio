@@ -56,7 +56,7 @@ export default function HomePage() {
 					</Link>
 					<button
 						onClick={openModal}
-						className="px-6 py-3 bg-secondary text-white font-bold rounded shadow-custom-dark hover:bg-primary transition duration-300"
+						className="px-6 py-3 bg-primary text-white font-bold rounded shadow-custom-dark hover:bg-secondary transition duration-300"
 					>
 						Discutons ensemble
 					</button>
@@ -94,7 +94,7 @@ export default function HomePage() {
 					Vous souhaitez en savoir plus sur moi ?
 				</p>
 				<Link href="/about">
-					<button className="px-6 py-3 bg-tertiary text-white font-bold rounded shadow-custom-dark hover:bg-primary transition duration-300">
+					<button className="px-6 py-3 bg-primary text-white font-bold rounded shadow-custom-dark hover:bg-secondary transition duration-300">
 						À propos de moi
 					</button>
 				</Link>
