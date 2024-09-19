@@ -1,3 +1,4 @@
+import { on } from 'events';
 import { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -31,14 +32,14 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
 					render: 'Message envoyé avec succès !',
 					type: 'success',
 					isLoading: false,
+					autoClose: 4000,
 				});
-				onClose();
 			} else {
 				toast.update(toastId, {
 					render: "Erreur lors de l'envoi du message.",
 					type: 'error',
 					isLoading: false,
-					autoClose: 5000,
+					autoClose: 4000,
 				});
 			}
 		} catch (error) {
@@ -106,7 +107,7 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
 					onClick={onClose}
 					className="btn bg-secondary text-white mt-4 w-full"
 				>
-					Annuler
+					Fermer
 				</button>
 				<ToastContainer />
 			</div>
