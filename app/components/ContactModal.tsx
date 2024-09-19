@@ -13,8 +13,6 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
 	const [email, setEmail] = useState('');
 	const [message, setMessage] = useState('');
 
-	// const notify = () => toast.success('Message envoyé avec succès !');
-
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
 		const toastId = toast.loading('Envoi en cours...');
@@ -57,7 +55,6 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
 	if (!isOpen) return null;
 
 	return (
-		
 		<div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
 			<div className="bg-hero-gradient text-textPrimary rounded-lg shadow-custom-light p-6 w-full max-w-md">
 				<h2 className="text-2xl font-bold text-center mb-4">Contactez-moi</h2>
@@ -104,7 +101,6 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
 					<button type="submit" className="btn bg-primary text-white w-full">
 						Envoyer
 					</button>
-					{/* <button onClick={notify}>Tester Toast</button> */}
 				</form>
 				<button
 					onClick={onClose}
