@@ -2,6 +2,20 @@ import React from 'react';
 
 const formations = [
 	{
+		title: "Formation Concepteur Développeur d'Applications",
+		description: `Formation avancée menant à l'obtention du titre certifié de Concepteur Développeur d'Applications (Niveau Bac+3/4). Cette formation permet d'apprendre à concevoir et déployer des applications sécurisées, maîtriser SQL et NoSQL, utiliser Docker, React, TypeScript, et contribuer à des projets DevOps.`,
+		date: 'En cours',
+		institution: 'Wild Code School',
+	},
+	{
+		title: 'RNCP5 - Développeur Web et Web Mobile (Niveau Bac+2)',
+		description:
+			'Obtention du diplôme RNCP5 certifiant mes compétences en développement web. Ce diplôme atteste ma capacité à concevoir, développer et maintenir des applications web et mobiles modernes.',
+		date: '2024',
+		institution: 'OpenClassrooms',
+		isHighlight: true,
+	},
+	{
 		title: 'Formation Next.js',
 		description:
 			'Approfondissement du développement avec Next.js pour créer des applications web performantes et SEO-friendly. Apprentissage des concepts de rendu côté serveur (SSR), de génération de sites statiques (SSG), et de l’intégration API pour des applications réactives et dynamiques.',
@@ -74,12 +88,23 @@ const Timeline = () => {
 			</h2>
 			<div className="relative border-l border-gray-200 dark:border-gray-700 mx-auto w-full max-w-2xl">
 				{formations.map((formation, index) => (
-					<div key={index} className="mb-10 ml-4">
+					<div
+						key={index}
+						className={`mb-10 ml-4 ${
+							formation.isHighlight
+								? 'bg-secondary p-6 rounded-lg shadow-lg'
+								: ''
+						}`}
+					>
 						<div className="absolute w-3 h-3 bg-primary rounded-full -left-1.5 border border-white dark:border-gray-900"></div>
 						<time className="mb-1 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">
 							{formation.date}
 						</time>
-						<h3 className="text-lg font-semibold text-white">
+						<h3
+							className={`text-lg font-semibold ${
+								formation.isHighlight ? 'text-white text-2xl' : 'text-white'
+							}`}
+						>
 							{formation.title}
 						</h3>
 						<p className="mb-2 text-base font-normal text-gray-300 dark:text-gray-400">
