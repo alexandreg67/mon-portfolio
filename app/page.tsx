@@ -44,8 +44,10 @@ export default function HomePage() {
 				</h1>
 				<p className="text-xl font-body text-textSecondary mb-6">
 					Développeur spécialisé en <strong>Next.js</strong>,{' '}
-					<strong>React</strong> et <strong>Tailwind CSS</strong>. Explorez mes
-					projets et contactez-moi pour collaborer sur des solutions innovantes.
+					<strong>React</strong> et <strong>Tailwind CSS</strong>. Diplômé RNCP5
+					(Bac+2) en Développement Web, je crée des solutions modernes et
+					performantes pour le web. Explorez mes projets et contactez-moi pour
+					collaborer sur des solutions innovantes.
 				</p>
 
 				<div className="flex space-x-4 justify-center">

@@ -1,3 +1,5 @@
+import { FaGraduationCap } from 'react-icons/fa';
+
 const AboutPage: React.FC = () => {
 	return (
 		<div className="min-h-screen flex flex-col items-center pt-10 py-10">
@@ -18,6 +20,15 @@ const AboutPage: React.FC = () => {
 						<strong>React</strong>, ou
 						<strong> Tailwind CSS</strong>, je suis dédié à concevoir des
 						expériences utilisateur fluides et engageantes.
+					</p>
+					<p className="text-lg text-gray-900 mb-6">
+						<FaGraduationCap className="inline-block text-primary mr-2" /> En
+						2024, j'ai obtenu le diplôme
+						<strong> RNCP5 (Niveau Bac+2)</strong> en Développement Web et Web
+						Mobile. Cette certification atteste de mes compétences en
+						développement, incluant la maîtrise de technologies modernes comme{' '}
+						<strong>React</strong>, <strong>Node.js</strong>, et{' '}
+						<strong>Tailwind CSS</strong>.
 					</p>
 					<p className="text-lg text-gray-900 mb-6">
 						Toujours en quête de perfectionnement, j'explore constamment les

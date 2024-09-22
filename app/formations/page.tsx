@@ -1,4 +1,5 @@
 import React from 'react';
+import { FaGraduationCap } from 'react-icons/fa';
 
 const formations = [
 	{
@@ -90,21 +91,25 @@ const Timeline = () => {
 				{formations.map((formation, index) => (
 					<div
 						key={index}
-						className={`mb-10 ml-4 ${
+						className={`mb-10 ml-4 p-6 rounded-lg shadow-lg ${
 							formation.isHighlight
-								? 'bg-secondary p-6 rounded-lg shadow-lg'
+								? 'border border-primary shadow-custom-light'
 								: ''
 						}`}
 					>
+						{/* Ajout de l'icône si la formation est marquée comme "Highlight" */}
 						<div className="absolute w-3 h-3 bg-primary rounded-full -left-1.5 border border-white dark:border-gray-900"></div>
 						<time className="mb-1 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">
 							{formation.date}
 						</time>
 						<h3
-							className={`text-lg font-semibold ${
+							className={`text-lg font-semibold flex items-center ${
 								formation.isHighlight ? 'text-white text-2xl' : 'text-white'
 							}`}
 						>
+							{formation.isHighlight && (
+								<FaGraduationCap className="text-primary mr-2" />
+							)}
 							{formation.title}
 						</h3>
 						<p className="mb-2 text-base font-normal text-gray-300 dark:text-gray-400">
