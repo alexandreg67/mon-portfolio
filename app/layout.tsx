@@ -1,6 +1,8 @@
 import './globals.css';
+import 'react-toastify/dist/ReactToastify.css';
 import Header from './components/Header';
 import ClientFooter from './components/ClientFooter';
+import { ToastContainer } from 'react-toastify';
 
 export const metadata = {
 	title: 'Portfolio de Développeur Web - Alexandre Graff',
@@ -26,6 +28,7 @@ export default function RootLayout({
 					{children}
 				</main>
 				<ClientFooter />
+				<ToastContainer />
 			</body>
 		</html>
 	);

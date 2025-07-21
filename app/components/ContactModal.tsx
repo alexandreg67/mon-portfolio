@@ -1,7 +1,5 @@
-import { on } from 'events';
 import { useState } from 'react';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 
 interface ContactModalProps {
 	isOpen: boolean;
@@ -109,13 +107,9 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
 				>
 					Fermer
 				</button>
-				<ToastContainer />
 			</div>
 		</div>
 	);
 };
 
 export default ContactModal;
-function async(ok: boolean) {
-	throw new Error('Function not implemented.');
-}

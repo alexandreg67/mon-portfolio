@@ -61,6 +61,7 @@ const Header: React.FC = () => {
 				<div className="lg:hidden">
 					<button
 						onClick={toggleMenu}
+						aria-label="Ouvrir le menu de navigation"
 						className="text-white focus:outline-none"
 					>
 						<svg
@@ -96,7 +97,11 @@ const Header: React.FC = () => {
 				} transition-transform duration-300 ease-in-out z-50 lg:hidden`}
 			>
 				<div className="flex justify-end p-4">
-					<button onClick={closeMenu} className="text-white">
+					<button 
+						onClick={closeMenu} 
+						aria-label="Fermer le menu de navigation"
+						className="text-white"
+					>
 						<svg
 							className="w-8 h-8"
 							fill="none"
