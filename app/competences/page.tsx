@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import 'devicon/devicon.min.css';
 import Image from 'next/image';
 
@@ -79,45 +79,53 @@ const secondaryCompetences = [
 ];
 
 const Competences = () => {
+	const keyCompetencesCards = useMemo(() => 
+		keyCompetences.map((competence, index) => (
+			<div
+				key={index}
+				className="bg-gradient-to-r from-backgroundStart to-backgroundEnd p-6 rounded-lg shadow-custom-dark transition-transform transform hover:scale-105"
+			>
+				<div className="flex items-center mb-2">
+					{competence.icon}
+					<h3 className="text-2xl font-semibold text-white ml-4">
+						{competence.skill}
+					</h3>
+				</div>
+				<p className="text-md text-gray-300 mb-2">
+					{competence.description}
+				</p>
+			</div>
+		)), []
+	);
+
+	const secondaryCompetencesCards = useMemo(() =>
+		secondaryCompetences.map((competence, index) => (
+			<div
+				key={index}
+				className="bg-gray-800 p-4 rounded-lg shadow-md text-center"
+			>
+				{competence.icon}
+				<h4 className="text-xl font-semibold text-white mt-2">
+					{competence.skill}
+				</h4>
+			</div>
+		)), []
+	);
+
 	return (
 		<section className="container mx-auto px-4 py-8">
 			<h2 className="text-4xl font-headline text-center mb-8 text-white">
 				Compétences Clés
 			</h2>
 			<div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-				{keyCompetences.map((competence, index) => (
-					<div
-						key={index}
-						className="bg-gradient-to-r from-backgroundStart to-backgroundEnd p-6 rounded-lg shadow-custom-dark transition-transform transform hover:scale-105"
-					>
-						<div className="flex items-center mb-2">
-							{competence.icon}
-							<h3 className="text-2xl font-semibold text-white ml-4">
-								{competence.skill}
-							</h3>
-						</div>
-						<p className="text-md text-gray-300 mb-2">
-							{competence.description}
-						</p>
-					</div>
-				))}
+				{keyCompetencesCards}
 			</div>
 
 			<h2 className="text-3xl font-headline text-center mt-12 mb-6 text-gray-300">
 				Compétences Secondaires
 			</h2>
 			<div className="grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-				{secondaryCompetences.map((competence, index) => (
-					<div
-						key={index}
-						className="bg-gray-800 p-4 rounded-lg shadow-md text-center"
-					>
-						{competence.icon}
-						<h4 className="text-xl font-semibold text-white mt-2">
-							{competence.skill}
-						</h4>
-					</div>
-				))}
+				{secondaryCompetencesCards}
 			</div>
 		</section>
 	);

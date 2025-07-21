@@ -44,20 +44,6 @@ export default function ContactPage() {
 					>
 						<FaGithub size={32} />
 					</a>
-					{/* <a
-            href="https://x.com/AlexGRA98698555"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-primary hover:text-secondary transition duration-300"
-          >
-            <Image
-              src="/x-icone.svg"
-              alt="X Icon"
-              width={32}
-              height={32}
-              className="text-primary hover:text-secondary transition duration-300"
-            />
-          </a> */}
 				</div>
 				<button
 					onClick={openModal}
