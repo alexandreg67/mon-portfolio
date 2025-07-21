@@ -9,7 +9,6 @@
     "module": "esnext",
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
-    "types": ["node"],
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
