@@ -3,9 +3,16 @@ import { FaGraduationCap } from 'react-icons/fa';
 
 const formations = [
 	{
+		title: 'RNCP6 - Concepteur Développeur d\'Applications (Niveau Bac+3/4)',
+		description: 'Obtention du diplôme RNCP6 certifiant mes compétences avancées en conception et développement d\'applications. Ce diplôme atteste ma capacité à concevoir et déployer des applications sécurisées, maîtriser SQL et NoSQL, utiliser Docker, React, TypeScript, et contribuer à des projets DevOps.',
+		date: '2025',
+		institution: 'Wild Code School',
+		isHighlight: true,
+	},
+	{
 		title: "Formation Concepteur Développeur d'Applications",
 		description: `Formation avancée menant à l'obtention du titre certifié de Concepteur Développeur d'Applications (Niveau Bac+3/4). Cette formation permet d'apprendre à concevoir et déployer des applications sécurisées, maîtriser SQL et NoSQL, utiliser Docker, React, TypeScript, et contribuer à des projets DevOps.`,
-		date: 'En cours',
+		date: '2024-2025',
 		institution: 'Wild Code School',
 	},
 	{
