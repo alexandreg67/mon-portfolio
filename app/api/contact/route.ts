@@ -33,9 +33,10 @@ export async function POST(request: Request) {
 		if (!parsedData.success) {
 			
 			// Créer des messages d'erreur plus conviviaux
+			const { fieldErrors } = parsedData.error.flatten();
 			const friendlyErrors: { [key: string]: string } = {};
-			parsedData.error.errors.forEach(err => {
-				const field = err.path[0] as string;
+
+			for (const [field, messages] of Object.entries(fieldErrors)) {
 				switch (field) {
 					case 'firstName':
 						friendlyErrors[field] = 'Le prénom doit contenir entre 2 et 50 caractères.';
@@ -50,10 +51,10 @@ export async function POST(request: Request) {
 						friendlyErrors[field] = 'Le message doit contenir entre 10 et 1000 caractères.';
 						break;
 					default:
-						friendlyErrors[field] = 'Ce champ contient une erreur.';
+						friendlyErrors[field] = messages.join(', ');
 				}
-			});
-			
+			}
+
 			return NextResponse.json({
 				message: "Veuillez corriger les erreurs suivantes :",
 				errors: friendlyErrors
