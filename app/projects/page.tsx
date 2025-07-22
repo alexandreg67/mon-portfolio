@@ -1,5 +1,12 @@
 import Image from 'next/image';
 import { FaGithub, FaExternalLinkAlt } from 'react-icons/fa';
+import { generatePageMetadata } from '../lib/metadata';
+
+export const metadata = generatePageMetadata(
+	'Mes Projets',
+	'Découvrez mes projets de développement web : optimisation SEO, dashboard de données, jeu Puissance 4 avec IA. Technologies : Next.js, React, TypeScript.',
+	'/projects'
+);
 
 type Project = {
 	type: string;

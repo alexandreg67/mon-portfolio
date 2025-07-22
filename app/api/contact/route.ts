@@ -1,8 +1,25 @@
 import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
+import { z } from 'zod';
 
 export async function POST(request: Request) {
 	const { firstName, lastName, email, message } = await request.json();
+
+	const contactSchema = z.object({
+		firstName: z.string().min(2).max(50),
+		lastName: z.string().min(2).max(50),
+		email: z.string().email(),
+		message: z.string().min(10).max(1000),
+	});
+  
+	const parsedData = contactSchema.safeParse({ firstName, lastName, email, message });
+	if (!parsedData.success) {
+		return NextResponse.json({
+			message: "Invalid input",
+			errors: parsedData.error.flatten() },
+			{ status: 400 }
+		);
+	}
 
 	const transporter = nodemailer.createTransport({
 		service: 'Gmail',

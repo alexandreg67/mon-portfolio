@@ -32,12 +32,29 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
 					isLoading: false,
 					autoClose: 4000,
 				});
+				// Reset form on success
+				setFirstName('');
+				setLastName('');
+				setEmail('');
+				setMessage('');
+				onClose();
 			} else {
+				const errorData = await res.json();
+				let errorMessage = "Erreur lors de l'envoi du message.";
+				
+				if (res.status === 400 && errorData.errors) {
+					errorMessage = "Veuillez vérifier vos données :";
+					if (errorData.errors.fieldErrors) {
+						const fields = Object.keys(errorData.errors.fieldErrors);
+						errorMessage += ` ${fields.join(', ')}`;
+					}
+				}
+				
 				toast.update(toastId, {
-					render: "Erreur lors de l'envoi du message.",
+					render: errorMessage,
 					type: 'error',
 					isLoading: false,
-					autoClose: 4000,
+					autoClose: 5000,
 				});
 			}
 		} catch (error) {
