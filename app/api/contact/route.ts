@@ -5,10 +5,16 @@ import { z } from 'zod';
 export async function POST(request: Request) {
 	try {
 		// Vérifier les variables d'environnement
-		if (!process.env.RESEND_API_KEY) {
-			console.error('Variable d\'environnement RESEND_API_KEY manquante');
+		const apiKey = process.env.RESEND_API_KEY;
+		
+		if (!apiKey || apiKey === 're_your_api_key_here' || !apiKey.startsWith('re_')) {
+			console.error('Variable d\'environnement RESEND_API_KEY manquante ou non configurée');
+			console.error('Valeur actuelle:', apiKey);
 			return NextResponse.json(
-				{ message: "Configuration email manquante" },
+				{ 
+					message: "Configuration email manquante. Veuillez configurer RESEND_API_KEY.",
+					detail: `La variable d'environnement RESEND_API_KEY n'est pas configurée correctement. Valeur: ${apiKey?.substring(0, 10)}...`
+				},
 				{ status: 500 }
 			);
 		}
@@ -21,15 +27,37 @@ export async function POST(request: Request) {
 			email: z.string().email(),
 			message: z.string().min(10).max(1000),
 		});
-	  
+	
+		
 		const parsedData = contactSchema.safeParse({ firstName, lastName, email, message });
 		if (!parsedData.success) {
-			console.error('Erreur de validation:', parsedData.error);
+			
+			// Créer des messages d'erreur plus conviviaux
+			const friendlyErrors: { [key: string]: string } = {};
+			parsedData.error.errors.forEach(err => {
+				const field = err.path[0] as string;
+				switch (field) {
+					case 'firstName':
+						friendlyErrors[field] = 'Le prénom doit contenir entre 2 et 50 caractères.';
+						break;
+					case 'lastName':
+						friendlyErrors[field] = 'Le nom doit contenir entre 2 et 50 caractères.';
+						break;
+					case 'email':
+						friendlyErrors[field] = 'Veuillez saisir une adresse email valide.';
+						break;
+					case 'message':
+						friendlyErrors[field] = 'Le message doit contenir entre 10 et 1000 caractères.';
+						break;
+					default:
+						friendlyErrors[field] = 'Ce champ contient une erreur.';
+				}
+			});
+			
 			return NextResponse.json({
-				message: "Invalid input",
-				errors: parsedData.error.flatten() },
-				{ status: 400 }
-			);
+				message: "Veuillez corriger les erreurs suivantes :",
+				errors: friendlyErrors
+			}, { status: 400 });
 		}
 
 		const resend = new Resend(process.env.RESEND_API_KEY);

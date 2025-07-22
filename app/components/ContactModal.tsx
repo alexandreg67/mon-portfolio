@@ -43,18 +43,18 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
 				let errorMessage = "Erreur lors de l'envoi du message.";
 				
 				if (res.status === 400 && errorData.errors) {
-					errorMessage = "Veuillez vérifier vos données :";
-					if (errorData.errors.fieldErrors) {
-						const fields = Object.keys(errorData.errors.fieldErrors);
-						errorMessage += ` ${fields.join(', ')}`;
-					}
+					// Gestion des erreurs de validation
+					const errorMessages = Object.values(errorData.errors).join('\n');
+					errorMessage = `${errorData.message}\n${errorMessages}`;
+				} else if (errorData.message) {
+					errorMessage = errorData.message;
 				}
 				
 				toast.update(toastId, {
 					render: errorMessage,
 					type: 'error',
 					isLoading: false,
-					autoClose: 5000,
+					autoClose: 7000,
 				});
 			}
 		} catch (error) {
