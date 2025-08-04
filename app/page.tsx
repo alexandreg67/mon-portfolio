@@ -3,31 +3,11 @@
 import Link from "next/link";
 import ContactModal from "./components/ContactModal";
 import { useModal } from "./lib/hooks";
-import { PROJECTS } from "./lib/projectsData";
+import { FEATURED_PROJECTS } from "./lib/constants";
 
 export default function HomePage() {
   const { isOpen: isModalOpen, openModal, closeModal } = useModal();
 
-  const featuredProjects = [
-    {
-      id: 1,
-      title: "Optimisation SEO et Accessibilité",
-      description: "Projet de formation : Optimisation des performances et de l'accessibilité d'un site web pour améliorer son référencement et son expérience utilisateur.",
-      link: "/projects#1",
-    },
-    {
-      id: 2,
-      title: "Dashboard de Données Météorologiques, Économiques et Géospatiales",
-      description: "Application de tableau de bord interactive avec des graphiques et manipulations de données via des appels API en temps réel pour afficher des données météorologiques, économiques et géospatiales.",
-      link: "/projects#2",
-    },
-    {
-      id: 3,
-      title: "Jeu Puissance 4 avec IA",
-      description: "Jeu Puissance 4 développé avec Next.js, React et TypeScript, permettant de jouer soit contre un autre joueur soit contre une IA. Défiez l'ordinateur et essayez de gagner !",
-      link: "/projects#3",
-    },
-  ];
 
   return (
     <div className="min-h-screen text-white flex flex-col items-center justify-center px-4 md:px-8">
@@ -66,7 +46,7 @@ export default function HomePage() {
           Aperçu de mes projets
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {featuredProjects.map((project) => (
+          {FEATURED_PROJECTS.map((project) => (
             <div
               key={project.id}
               className="bg-white bg-opacity-90 p-6 rounded-lg shadow-custom-light"

@@ -3,6 +3,7 @@ import { FaGithub, FaExternalLinkAlt } from 'react-icons/fa';
 import { generatePageMetadata } from '../lib/metadata';
 import { Project, SectionProps } from '../lib/types';
 import { PROJECTS } from '../lib/projectsData';
+import { BLUR_PLACEHOLDER_SVG } from '../lib/constants';
 
 export const metadata = generatePageMetadata(
 	'Mes Projets',
@@ -33,7 +34,7 @@ const Section: React.FC<SectionProps> = ({ title, items }) => (
 							className="rounded-lg w-full h-48 object-cover md:h-auto"
 							loading="lazy"
 							placeholder="blur"
-							blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjY2NjIi8+PC9zdmc+"
+							blurDataURL={BLUR_PLACEHOLDER_SVG}
 						/>
 					</div>
 					{/* Section du texte à droite */}
