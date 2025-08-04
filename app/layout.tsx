@@ -4,6 +4,7 @@ import Header from './components/Header';
 import ClientFooter from './components/ClientFooter';
 import { ToastContainer } from 'react-toastify';
 import { baseMetadata } from './lib/metadata';
+import { SITE_CONFIG } from './lib/constants';
 
 export const metadata = baseMetadata;
 
@@ -26,12 +27,12 @@ export default function RootLayout({
 						__html: JSON.stringify({
 							'@context': 'https://schema.org',
 							'@type': 'Person',
-							name: 'Alexandre Graff',
+							name: SITE_CONFIG.AUTHOR,
 							jobTitle: 'Développeur Web Full-Stack',
-							url: 'https://votre-domaine.com',
+							url: SITE_CONFIG.DOMAIN,
 							sameAs: [
-								'https://github.com/alexandreg67',
-								'https://linkedin.com/in/votre-profil',
+								SITE_CONFIG.GITHUB,
+								SITE_CONFIG.LINKEDIN,
 							],
 							knowsAbout: [
 								'Next.js',
@@ -40,15 +41,14 @@ export default function RootLayout({
 								'Tailwind CSS',
 								'Développement Web',
 							],
-							description:
-								'Développeur web spécialisé en Next.js, React et TypeScript. Diplômé RNCP6 (Bac+3/4).',
+							description: SITE_CONFIG.DESCRIPTION,
 						}),
 					}}
 				/>
 			</head>
-			<body className="min-h-screen flex flex-col bg-gradient-to-r from-backgroundStart to-backgroundEnd text-textPrimary">
+			<body className="min-h-screen flex flex-col bg-gradient-to-r from-backgroundStart to-backgroundEnd text-textPrimary" role="document">
 				<Header />
-				<main className="flex-grow flex flex-col items-center justify-center">
+				<main className="flex-grow flex flex-col items-center justify-center" role="main">
 					{children}
 				</main>
 				<ClientFooter />

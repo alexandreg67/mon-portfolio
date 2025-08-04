@@ -1,6 +1,9 @@
 import Image from 'next/image';
 import { FaGithub, FaExternalLinkAlt } from 'react-icons/fa';
 import { generatePageMetadata } from '../lib/metadata';
+import { Project, SectionProps } from '../lib/types';
+import { PROJECTS } from '../lib/projectsData';
+import { BLUR_PLACEHOLDER_SVG } from '../lib/constants';
 
 export const metadata = generatePageMetadata(
 	'Mes Projets',
@@ -8,137 +11,9 @@ export const metadata = generatePageMetadata(
 	'/projects'
 );
 
-type Project = {
-	type: string;
-	title: string;
-	description: JSX.Element;
-	technologies: string[];
-	imageUrl: string;
-	liveLink?: string;
-	codeLink: string;
-};
-
-// Liste des projets avec du texte en gras
-const projects: Project[] = [
-	{
-		type: 'Optimisation Web',
-		title: 'Optimisation SEO et Accessibilité',
-		description: (
-			<>
-				<strong>Objectif :</strong> Améliorer les performances, le référencement
-				(SEO) et l'accessibilité d'un site web.
-				<br />
-				<ul className="list-disc ml-6">
-					<li>
-						<strong>Analyse :</strong> J'ai utilisé des outils tels que
-						Lighthouse et Wave pour identifier les axes d'amélioration.
-					</li>
-					<li>
-						<strong>Recommandations :</strong> Optimisation du chargement,
-						amélioration du code (HTML, CSS, JavaScript), et augmentation de
-						l'accessibilité.
-					</li>
-					<li>
-						<strong>Résultat :</strong> Un rapport détaillé avec des captures
-						avant/après, soulignant l'impact des changements sur la performance
-						et le SEO.
-					</li>
-				</ul>
-				<strong>Compétences clés :</strong> SEO, Accessibilité, Performance Web.
-			</>
-		),
-		technologies: [
-			'Lighthouse',
-			'Wave',
-			'SEO',
-			'Accessibilité',
-			'Performance Web',
-		],
-		imageUrl: '/nina.png',
-		liveLink: 'https://alexandreg67.github.io/ninacarducci.github.io/',
-		codeLink: 'https://github.com/alexandreg67/ninacarducci.github.io',
-	},
-	{
-		type: 'Tableau de Bord de Données',
-		title: 'Dashboard de Données Météorologiques, Économiques et Géospatiales',
-		description: (
-			<>
-				<strong>Objectif :</strong> Créer un tableau de bord interactif
-				affichant des données en temps réel.
-				<br />
-				<ul className="list-disc ml-6">
-					<li>
-						<strong>Données Météorologiques :</strong> Prévisions météo via des
-						API comme OpenWeather, avec des graphiques.
-					</li>
-					<li>
-						<strong>Données Économiques :</strong> Comparaison des indicateurs
-						économiques (PIB, CO2) avec des graphiques interactifs.
-					</li>
-					<li>
-						<strong>Données Géospatiales :</strong> Visualisation sur carte des
-						monuments et musées avec filtres géographiques.
-					</li>
-				</ul>
-				<strong>Compétences clés :</strong> API, Manipulation de données,
-				Graphiques interactifs.
-			</>
-		),
-		technologies: [
-			'Next.js',
-			'React',
-			'TypeScript',
-			'Tailwind CSS',
-			'DaisyUI',
-			'API',
-		],
-		imageUrl: '/terralens.png',
-		liveLink:
-			'https://terralens.vercel.app/',
-		codeLink: 'https://github.com/alexandreg67/terralens',
-	},
-	{
-		type: 'Jeu',
-		title: 'Jeu Puissance 4 avec IA',
-		description: (
-			<>
-				<strong>Objectif :</strong> Développer un jeu de Puissance 4 jouable
-				contre un autre joueur ou contre une IA.
-				<br />
-				<ul className="list-disc ml-6">
-					<li>
-						<strong>Mode Joueur contre Joueur :</strong> Jeu local entre deux
-						utilisateurs.
-					</li>
-					<li>
-						<strong>Mode IA :</strong> Implémentation d'une IA pour défier le
-						joueur.
-					</li>
-					<li>
-						<strong>Technologies :</strong> Jeu entièrement responsive avec une
-						interface fluide.
-					</li>
-				</ul>
-				<strong>Compétences clés :</strong> IA, UX/UI, Développement de jeux.
-			</>
-		),
-		technologies: [
-			'Next.js',
-			'React',
-			'TypeScript',
-			'Tailwind CSS',
-			'DaisyUI',
-			'IA',
-		],
-		imageUrl: '/puissance4.png',
-		liveLink:
-			'https://puissance4-react.vercel.app/',
-		codeLink: 'https://github.com/alexandreg67/puissance4_react',
-	},
-];
 
 // Composant Section mis à jour pour une disposition en flex
-const Section = ({ title, items }: { title: string; items: Project[] }) => (
+const Section: React.FC<SectionProps> = ({ title, items }) => (
 	<section className="container mx-auto px-4 py-10">
 		<h2 className="text-4xl font-headline text-center mb-10 text-white">
 			{title}
@@ -153,10 +28,13 @@ const Section = ({ title, items }: { title: string; items: Project[] }) => (
 					<div className="relative w-full md:w-1/3 mb-4 md:mb-0">
 						<Image
 							src={item.imageUrl}
-							alt={item.title}
+							alt={`Capture d'écran du projet ${item.title}`}
 							width={500}
 							height={300}
 							className="rounded-lg w-full h-48 object-cover md:h-auto"
+							loading="lazy"
+							placeholder="blur"
+							blurDataURL={BLUR_PLACEHOLDER_SVG}
 						/>
 					</div>
 					{/* Section du texte à droite */}
@@ -184,9 +62,10 @@ const Section = ({ title, items }: { title: string; items: Project[] }) => (
 									href={item.liveLink}
 									target="_blank"
 									rel="noopener noreferrer"
-									className="text-secondary hover:text-secondary-dark transition duration-300 flex items-center"
+									className="text-secondary hover:text-secondary-dark transition duration-300 flex items-center focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 rounded"
+									aria-label={`Voir le projet ${item.title} en direct`}
 								>
-									<FaExternalLinkAlt className="mr-2" />
+									<FaExternalLinkAlt className="mr-2" aria-hidden="true" />
 									Voir en Direct
 								</a>
 							)}
@@ -194,9 +73,10 @@ const Section = ({ title, items }: { title: string; items: Project[] }) => (
 								href={item.codeLink}
 								target="_blank"
 								rel="noopener noreferrer"
-								className="text-secondary hover:text-secondary-dark transition duration-300 flex items-center"
+								className="text-secondary hover:text-secondary-dark transition duration-300 flex items-center focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 rounded"
+								aria-label={`Voir le code source du projet ${item.title}`}
 							>
-								<FaGithub className="mr-2" />
+								<FaGithub className="mr-2" aria-hidden="true" />
 								Voir le Code
 							</a>
 						</div>
@@ -208,6 +88,6 @@ const Section = ({ title, items }: { title: string; items: Project[] }) => (
 );
 
 // Composant principal
-const Projects = () => <Section title="Mes Projets" items={projects} />;
+const Projects: React.FC = () => <Section title="Mes Projets" items={PROJECTS} />;
 
 export default Projects;

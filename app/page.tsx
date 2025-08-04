@@ -1,39 +1,13 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
 import ContactModal from "./components/ContactModal";
+import { useModal } from "./lib/hooks";
+import { FEATURED_PROJECTS } from "./lib/constants";
 
 export default function HomePage() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { isOpen: isModalOpen, openModal, closeModal } = useModal();
 
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
-
-  const projects = [
-    {
-      id: 1,
-      title: "Optimisation SEO et Accessibilité",
-      description:
-        "Projet de formation : Optimisation des performances et de l'accessibilité d'un site web pour améliorer son référencement et son expérience utilisateur.",
-      link: "/projects#1",
-    },
-    {
-      id: 2,
-      title:
-        "Dashboard de Données Météorologiques, Économiques et Géospatiales",
-      description:
-        "Application de tableau de bord interactive avec des graphiques et manipulations de données via des appels API en temps réel pour afficher des données météorologiques, économiques et géospatiales.",
-      link: "/projects#2",
-    },
-    {
-      id: 3,
-      title: "Jeu Puissance 4 avec IA",
-      description:
-        "Jeu Puissance 4 développé avec Next.js, React et TypeScript, permettant de jouer soit contre un autre joueur soit contre une IA. Défiez l'ordinateur et essayez de gagner !",
-      link: "/projects#3",
-    },
-  ];
 
   return (
     <div className="min-h-screen text-white flex flex-col items-center justify-center px-4 md:px-8">
@@ -72,22 +46,27 @@ export default function HomePage() {
           Aperçu de mes projets
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {projects.map((project) => (
+          {FEATURED_PROJECTS.map((project) => (
             <div
               key={project.id}
               className="bg-white bg-opacity-90 p-6 rounded-lg shadow-custom-light"
+              role="article"
+              aria-labelledby={`project-title-${project.id}`}
             >
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">
+              <h3 id={`project-title-${project.id}`} className="text-2xl font-bold text-gray-900 mb-2">
                 {project.title}
               </h3>
               <p className="text-lg text-gray-700 mb-4">
                 {project.description}
               </p>
-              <Link href={project.link}>
+              <Link 
+                href={project.link}
+                className="text-primary hover:underline focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded"
+                aria-label={`Voir les détails du projet ${project.title}`}
+              >
                 <p className="text-primary hover:underline">
-                  Voir le projet :{" "}
+                  Découvrir ce projet
                 </p>
-                <p className="text-sm text-gray-700">{project.title}</p>
               </Link>
             </div>
           ))}
