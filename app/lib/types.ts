@@ -5,7 +5,7 @@ export interface Project {
 	type: string;
 	title: string;
 	description: ReactNode;
-	technologies: string[];
+	technologies: readonly string[];
 	imageUrl: string;
 	liveLink?: string;
 	codeLink: string;
