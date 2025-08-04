@@ -1,13 +1,13 @@
 import { Metadata } from 'next';
+import { SITE_CONFIG } from './constants';
 
 export const baseMetadata: Metadata = {
-	metadataBase: new URL('https://votre-domaine.com'),
+	metadataBase: new URL(SITE_CONFIG.DOMAIN),
 	title: {
-		default: 'Alexandre Graff - Développeur Web Full-Stack',
-		template: '%s | Alexandre Graff - Portfolio',
+		default: SITE_CONFIG.TITLE,
+		template: `%s | ${SITE_CONFIG.AUTHOR} - Portfolio`,
 	},
-	description:
-		'Portfolio d\'Alexandre Graff, développeur web spécialisé en Next.js, React et TypeScript. Diplômé RNCP6 (Bac+3/4), je crée des solutions web modernes et performantes.',
+	description: SITE_CONFIG.DESCRIPTION,
 	keywords: [
 		'développeur web',
 		'Next.js',
@@ -20,9 +20,9 @@ export const baseMetadata: Metadata = {
 		'développement web',
 		'JavaScript',
 	],
-	authors: [{ name: 'Alexandre Graff' }],
-	creator: 'Alexandre Graff',
-	publisher: 'Alexandre Graff',
+	authors: [{ name: SITE_CONFIG.AUTHOR }],
+	creator: SITE_CONFIG.AUTHOR,
+	publisher: SITE_CONFIG.AUTHOR,
 	robots: {
 		index: true,
 		follow: true,
@@ -37,25 +37,23 @@ export const baseMetadata: Metadata = {
 	openGraph: {
 		type: 'website',
 		locale: 'fr_FR',
-		url: 'https://votre-domaine.com',
-		siteName: 'Alexandre Graff - Portfolio',
-		title: 'Alexandre Graff - Développeur Web Full-Stack',
-		description:
-			'Portfolio d\'Alexandre Graff, développeur web spécialisé en Next.js, React et TypeScript. Découvrez mes projets et contactez-moi pour collaborer.',
+		url: SITE_CONFIG.DOMAIN,
+		siteName: `${SITE_CONFIG.AUTHOR} - Portfolio`,
+		title: SITE_CONFIG.TITLE,
+		description: SITE_CONFIG.DESCRIPTION,
 		images: [
 			{
 				url: '/og-image.jpg',
 				width: 1200,
 				height: 630,
-				alt: 'Alexandre Graff - Développeur Web Portfolio',
+				alt: `${SITE_CONFIG.AUTHOR} - Développeur Web Portfolio`,
 			},
 		],
 	},
 	twitter: {
 		card: 'summary_large_image',
-		title: 'Alexandre Graff - Développeur Web Full-Stack',
-		description:
-			'Portfolio d\'Alexandre Graff, développeur web spécialisé en Next.js, React et TypeScript.',
+		title: SITE_CONFIG.TITLE,
+		description: SITE_CONFIG.DESCRIPTION,
 		images: ['/og-image.jpg'],
 	},
 	verification: {
@@ -74,7 +72,7 @@ export const generatePageMetadata = (
 		...baseMetadata.openGraph,
 		title,
 		description,
-		url: `https://votre-domaine.com${path}`,
+		url: `${SITE_CONFIG.DOMAIN}${path}`,
 	},
 	twitter: {
 		...baseMetadata.twitter,

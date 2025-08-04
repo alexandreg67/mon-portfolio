@@ -1,71 +1,13 @@
-import { useState } from 'react';
-import { toast } from 'react-toastify';
-
-interface ContactModalProps {
-	isOpen: boolean;
-	onClose: () => void;
-}
+import React from 'react';
+import { ContactModalProps } from '../lib/types';
+import { useContactForm } from '../lib/hooks';
 
 const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
-	const [firstName, setFirstName] = useState('');
-	const [lastName, setLastName] = useState('');
-	const [email, setEmail] = useState('');
-	const [message, setMessage] = useState('');
+	const { formData, isLoading, updateField, submitForm } = useContactForm(onClose);
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
-		const toastId = toast.loading('Envoi en cours...');
-
-		try {
-			const res = await fetch('/api/contact', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({ firstName, lastName, email, message }),
-			});
-
-			if (res.ok) {
-				toast.update(toastId, {
-					render: 'Message envoyé avec succès !',
-					type: 'success',
-					isLoading: false,
-					autoClose: 4000,
-				});
-				// Reset form on success
-				setFirstName('');
-				setLastName('');
-				setEmail('');
-				setMessage('');
-				onClose();
-			} else {
-				const errorData = await res.json();
-				let errorMessage = "Erreur lors de l'envoi du message.";
-				
-				if (res.status === 400 && errorData.errors) {
-					// Gestion des erreurs de validation
-					const errorMessages = Object.values(errorData.errors).join('\n');
-					errorMessage = `${errorData.message}\n${errorMessages}`;
-				} else if (errorData.message) {
-					errorMessage = errorData.message;
-				}
-				
-				toast.update(toastId, {
-					render: errorMessage,
-					type: 'error',
-					isLoading: false,
-					autoClose: 7000,
-				});
-			}
-		} catch (error) {
-			console.error('Failed to send message:', error);
-			toast.update(toastId, {
-				render: "Erreur lors de l'envoi du message.",
-				type: 'error',
-				isLoading: false,
-				autoClose: 5000,
-			});
-		}
+		await submitForm();
 	};
 
 	if (!isOpen) return null;
@@ -78,49 +20,65 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
 					<input
 						type="text"
 						placeholder="Prénom"
-						value={firstName}
+						value={formData.firstName}
 						id="firstName"
 						autoComplete="given-name"
-						onChange={(e) => setFirstName(e.target.value)}
+						onChange={(e) => updateField('firstName', e.target.value)}
 						className="input input-bordered w-full mb-4 text-textPrimary bg-backgroundStart placeholder-textSecondary"
+						disabled={isLoading}
 						required
+						aria-label="Prénom"
 					/>
 					<input
 						type="text"
 						placeholder="Nom"
-						value={lastName}
+						value={formData.lastName}
 						id="lastName"
 						autoComplete="family-name"
-						onChange={(e) => setLastName(e.target.value)}
+						onChange={(e) => updateField('lastName', e.target.value)}
 						className="input input-bordered w-full mb-4 text-textPrimary bg-backgroundStart placeholder-textSecondary"
+						disabled={isLoading}
 						required
+						aria-label="Nom de famille"
 					/>
 					<input
 						type="email"
 						placeholder="Email"
-						value={email}
+						value={formData.email}
 						id="email"
 						autoComplete="email"
-						onChange={(e) => setEmail(e.target.value)}
+						onChange={(e) => updateField('email', e.target.value)}
 						className="input input-bordered w-full mb-4 text-textPrimary bg-backgroundStart placeholder-textSecondary"
+						disabled={isLoading}
 						required
+						aria-label="Adresse email"
 					/>
 					<textarea
 						placeholder="Votre message"
-						value={message}
+						value={formData.message}
 						id="message"
 						autoComplete="off"
-						onChange={(e) => setMessage(e.target.value)}
+						onChange={(e) => updateField('message', e.target.value)}
 						className="textarea textarea-bordered w-full mb-4 text-textPrimary bg-backgroundStart placeholder-textSecondary"
+						disabled={isLoading}
 						required
+						aria-label="Message"
+						rows={4}
 					></textarea>
-					<button type="submit" className="btn bg-primary text-white w-full">
-						Envoyer
+					<button 
+						type="submit" 
+						className="btn bg-primary text-white w-full disabled:opacity-50"
+						disabled={isLoading}
+						aria-label="Envoyer le message"
+					>
+						{isLoading ? 'Envoi en cours...' : 'Envoyer'}
 					</button>
 				</form>
 				<button
 					onClick={onClose}
 					className="btn bg-secondary text-white mt-4 w-full"
+					disabled={isLoading}
+					aria-label="Fermer la modal de contact"
 				>
 					Fermer
 				</button>
