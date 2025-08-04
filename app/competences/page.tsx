@@ -83,15 +83,18 @@ const Competences = () => {
 		keyCompetences.map((competence, index) => (
 			<div
 				key={index}
-				className="bg-gradient-to-r from-backgroundStart to-backgroundEnd p-6 rounded-lg shadow-custom-dark transition-transform transform hover:scale-105"
+				className="group card-modern p-8 rounded-2xl shadow-card hover:shadow-card-hover transition-all duration-300 animate-slide-up"
+				style={{animationDelay: `${0.1 * index}s`}}
 			>
-				<div className="flex items-center mb-2">
-					{competence.icon}
-					<h3 className="text-2xl font-semibold text-white ml-4">
+				<div className="flex items-center mb-6">
+					<div className="p-3 rounded-xl bg-gradient-to-r from-primary-600/20 to-primary-500/20 border border-primary-500/30 group-hover:scale-110 transition-transform duration-300">
+						{competence.icon}
+					</div>
+					<h3 className="text-2xl font-heading font-bold text-white ml-4 group-hover:text-primary-400 transition-colors">
 						{competence.skill}
 					</h3>
 				</div>
-				<p className="text-md text-gray-300 mb-2">
+				<p className="text-slate-300 leading-relaxed">
 					{competence.description}
 				</p>
 			</div>
@@ -102,10 +105,13 @@ const Competences = () => {
 		secondaryCompetences.map((competence, index) => (
 			<div
 				key={index}
-				className="bg-gray-800 p-4 rounded-lg shadow-md text-center"
+				className="group card-modern p-6 rounded-xl shadow-card hover:shadow-card-hover text-center transition-all duration-300 hover:scale-105 animate-slide-up"
+				style={{animationDelay: `${0.05 * index + 0.3}s`}}
 			>
-				{competence.icon}
-				<h4 className="text-xl font-semibold text-white mt-2">
+				<div className="p-3 rounded-lg bg-gradient-to-r from-secondary-600/20 to-secondary-500/20 border border-secondary-500/30 inline-block mb-4 group-hover:scale-110 transition-transform duration-300">
+					{competence.icon}
+				</div>
+				<h4 className="text-lg font-heading font-semibold text-white group-hover:text-secondary-400 transition-colors">
 					{competence.skill}
 				</h4>
 			</div>
@@ -113,18 +119,18 @@ const Competences = () => {
 	);
 
 	return (
-		<section className="container mx-auto px-4 py-8">
-			<h2 className="text-4xl font-headline text-center mb-8 text-white">
-				Compétences Clés
+		<section className="container mx-auto px-4 py-12">
+			<h2 className="text-4xl md:text-5xl font-heading font-bold text-center mb-16 text-white">
+				Mes <span className="text-gradient">Compétences</span>
 			</h2>
-			<div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+			<div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 mb-20">
 				{keyCompetencesCards}
 			</div>
 
-			<h2 className="text-3xl font-headline text-center mt-12 mb-6 text-gray-300">
-				Compétences Secondaires
-			</h2>
-			<div className="grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+			<h3 className="text-2xl md:text-3xl font-heading font-semibold text-center mb-12 text-slate-200">
+				Technologies Complémentaires
+			</h3>
+			<div className="grid gap-6 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 max-w-4xl mx-auto">
 				{secondaryCompetencesCards}
 			</div>
 		</section>

@@ -46,9 +46,9 @@ export default function RootLayout({
 					}}
 				/>
 			</head>
-			<body className="min-h-screen flex flex-col bg-gradient-to-r from-backgroundStart to-backgroundEnd text-textPrimary" role="document">
+			<body className="min-h-screen flex flex-col font-body text-textPrimary" role="document">
 				<Header />
-				<main className="flex-grow flex flex-col items-center justify-center" role="main">
+				<main className="flex-grow flex flex-col items-center justify-center pt-20" role="main">
 					{children}
 				</main>
 				<ClientFooter />
