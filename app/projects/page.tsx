@@ -94,7 +94,7 @@ const projects: Project[] = [
 		],
 		imageUrl: '/terralens.png',
 		liveLink:
-			'https://terralens-c8qbx8otm-alexandres-projects-214ab778.vercel.app/',
+			'https://terralens.vercel.app/',
 		codeLink: 'https://github.com/alexandreg67/terralens',
 	},
 	{
@@ -132,7 +132,7 @@ const projects: Project[] = [
 		],
 		imageUrl: '/puissance4.png',
 		liveLink:
-			'https://puissance4-react-hhk8u2p0r-alexandres-projects-214ab778.vercel.app/',
+			'https://puissance4-react.vercel.app/',
 		codeLink: 'https://github.com/alexandreg67/puissance4_react',
 	},
 ];
