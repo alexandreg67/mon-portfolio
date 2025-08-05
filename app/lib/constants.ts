@@ -123,3 +123,129 @@ export const PROJECTS_DATA = [
 		codeLink: 'https://github.com/alexandreg67/space-game',
 	},
 ] as const;
+
+// Structure des compétences organisées par catégories
+export const SKILLS_DATA = {
+	categories: [
+		{
+			id: 'frontend',
+			title: 'Développement Frontend',
+			description: 'Technologies pour créer des interfaces utilisateur modernes et performantes',
+			skills: [
+				{
+					skill: 'Next.js',
+					description: 'Framework React full-stack avec App Router, rendu côté serveur (SSR), génération statique (SSG) et optimisations intégrées pour la performance.',
+					project: 'Développé un site e-commerce avec Next.js, optimisé pour le SEO, ayant conduit à une augmentation de 20% du trafic organique.',
+					icon: 'devicon-nextjs-original-wordmark text-white text-4xl',
+					level: 'expert'
+				},
+				{
+					skill: 'React',
+					description: 'Bibliothèque JavaScript pour construire des interfaces utilisateur composables avec hooks avancés, Server Components et state management.',
+					project: 'Création d\'une application de gestion de tâches avec React, permettant une augmentation de 30% de la productivité des utilisateurs.',
+					icon: 'devicon-react-original colored text-4xl',
+					level: 'expert'
+				},
+				{
+					skill: 'TypeScript',
+					description: 'JavaScript avec typage statique pour un développement plus robuste, une meilleure maintenabilité et une expérience développeur optimisée.',
+					project: 'Migration d\'une codebase JavaScript vers TypeScript, réduisant de 65% les bugs en production.',
+					icon: 'devicon-typescript-plain colored text-4xl',
+					level: 'expert'
+				}
+			]
+		},
+		{
+			id: 'backend',
+			title: 'Développement Backend',
+			description: 'Solutions serveur robustes et APIs performantes',
+			skills: [
+				{
+					skill: 'Express',
+					description: 'Framework Node.js minimaliste pour développer des APIs REST et GraphQL performantes avec middleware personnalisés.',
+					project: 'Créé une API Express pour une application SaaS, réduisant le temps de réponse moyen de 30%.',
+					icon: 'devicon-express-original text-white text-4xl',
+					level: 'expert'
+				},
+				{
+					skill: 'PostgreSQL',
+					description: 'Base de données relationnelle avancée avec optimisation de requêtes, indexation et gestion des transactions complexes.',
+					project: 'Optimisé des requêtes PostgreSQL pour un CRM, divisant le temps de génération de rapports par 4.',
+					icon: 'devicon-postgresql-plain colored text-4xl',
+					level: 'expert'
+				},
+				{
+					skill: 'GraphQL',
+					description: 'Langage de requête pour APIs offrant flexibilité, typage fort et optimisation des données transférées.',
+					project: 'Implémenté GraphQL sur un portail média, réduisant de 40% le volume des données transférées.',
+					icon: 'devicon-graphql-plain colored text-4xl',
+					level: 'expert'
+				}
+			]
+		},
+		{
+			id: 'ai-productivity',
+			title: 'IA & Outils de Productivité',
+			description: 'Maîtrise des outils d\'intelligence artificielle comme multiplicateur de performance et d\'efficacité',
+			skills: [
+				{
+					skill: 'Assistants de Développement IA',
+					description: 'Expertise en Claude Code, GitHub Copilot et Warp AI pour optimiser la productivité de développement et la qualité du code.',
+					project: 'Augmentation de 55% de la productivité équipe grâce à l\'intégration d\'assistants IA dans le workflow de développement.',
+					icon: 'fas fa-robot text-primary-400 text-4xl',
+					level: 'expert'
+				},
+				{
+					skill: 'Évaluation de Modèles IA',
+					description: 'Analyse comparative et sélection de modèles IA (GPT, Claude, LLaMA, modèles spécialisés) selon les besoins techniques.',
+					project: 'Mise en place d\'un framework d\'évaluation pour sélectionner le modèle optimal par cas d\'usage, améliorant les performances de 40%.',
+					icon: 'fas fa-chart-line text-secondary-400 text-4xl',
+					level: 'expert'
+				},
+				{
+					skill: 'Intégration IA dans Applications',
+					description: 'Développement d\'applications intégrant l\'IA : APIs conversationnelles, analyse de données et automatisation intelligente.',
+					project: 'Intégration d\'un système de recommandations IA augmentant l\'engagement utilisateur de 45%.',
+					icon: 'fas fa-brain text-indigo-400 text-4xl',
+					level: 'expert'
+				}
+			]
+		},
+		{
+			id: 'devops',
+			title: 'DevOps & Infrastructure',
+			description: 'Outils et pratiques pour le déploiement et la maintenance d\'applications',
+			skills: [
+				{
+					skill: 'Docker',
+					description: 'Containerisation d\'applications pour assurer la portabilité, l\'isolation et des déploiements reproductibles.',
+					project: 'Containerisé une suite micro-services, divisant par deux les incidents "it-works-on-my-machine".',
+					icon: 'devicon-docker-plain colored text-4xl',
+					level: 'expert'
+				}
+			]
+		}
+	],
+	complementarySkills: [
+		{
+			skill: 'Angular',
+			icon: 'devicon-angularjs-plain colored text-4xl',
+			category: 'Frontend'
+		},
+		{
+			skill: 'NestJS',
+			icon: 'devicon-nestjs-plain colored text-4xl',
+			category: 'Backend'
+		},
+		{
+			skill: 'C# .NET',
+			icon: 'devicon-dotnetcore-plain colored text-4xl',
+			category: 'Backend'
+		},
+		{
+			skill: 'Python',
+			icon: 'devicon-python-plain colored text-4xl',
+			category: 'Backend'
+		}
+	]
+} as const;

@@ -1,107 +1,80 @@
 import React, { useMemo } from 'react';
 import 'devicon/devicon.min.css';
-import Image from 'next/image';
-
-const keyCompetences = [
-	{
-		skill: 'Next.js',
-		description:
-			'Développement full-stack avec Next.js, y compris le rendu côté serveur et la génération statique.',
-		project:
-			'Développé un site e-commerce avec Next.js, optimisé pour le SEO, ayant conduit à une augmentation de 20% du trafic organique.',
-		icon: (
-			<i className="devicon-nextjs-original-wordmark text-white text-4xl"></i>
-		),
-	},
-	{
-		skill: 'React',
-		description:
-			"Construction d'interfaces utilisateur dynamiques avec React, en utilisant des hooks et le state management.",
-		project:
-			"Création d'une application de gestion de tâches avec React, permettant une augmentation de 30% de la productivité des utilisateurs.",
-		icon: <i className="devicon-react-original colored text-4xl"></i>,
-	},
-	{
-		skill: 'Express',
-		description: 'Développement de serveurs REST performants avec Express, intégrant la logique métier et la sécurité.',
-		project: 'Créé une API Express pour une application SaaS, réduisant le temps de réponse moyen de 30 %.',
-		icon: <i className="devicon-express-original text-white text-4xl"></i>,
-	},
-	{
-		skill: 'Docker',
-		description: 'Containerisation d\'applications pour assurer la portabilité et des déploiements reproductibles.',
-		project: 'Containerisé une suite micro-services, divisant par deux les incidents "it-works-on-my-machine".',
-		icon: <i className="devicon-docker-plain colored text-4xl"></i>,
-	},
-	{
-		skill: 'PostgreSQL',
-		description: 'Conception et optimisation de bases de données relationnelles robustes avec PostgreSQL.',
-		project: 'Optimisé des requêtes PostgreSQL pour un CRM, divisant le temps de génération de rapports par 4.',
-		icon: <i className="devicon-postgresql-plain colored text-4xl"></i>,
-	},
-	{
-		skill: 'GraphQL',
-		description: 'Création de schémas GraphQL et résolveurs pour des APIs flexibles et typées.',
-		project: 'Implémenté GraphQL sur un portail média, réduisant de 40 % le volume des données transférées.',
-		icon: <i className="devicon-graphql-plain colored text-4xl"></i>,
-	},
-];
-
-const secondaryCompetences = [
-	{
-		skill: 'Angular',
-		icon: <i className="devicon-angularjs-plain colored text-4xl"></i>,
-	},
-	{
-		skill: 'NestJS',
-		icon: <i className="devicon-nestjs-plain colored text-4xl"></i>,
-	},
-	{
-		skill: 'C# .NET',
-		icon: <i className="devicon-dotnetcore-plain colored text-4xl"></i>,
-	},
-	{
-		skill: 'Python',
-		icon: <i className="devicon-python-plain colored text-4xl"></i>,
-	},
-];
+import { SKILLS_DATA } from '../lib/constants';
+import { SkillCategory, ComplementarySkill } from '../lib/types';
 
 const Competences = () => {
-	const keyCompetencesCards = useMemo(() => 
-		keyCompetences.map((competence, index) => (
-			<div
-				key={index}
-				className="group card-modern p-8 rounded-2xl shadow-card hover:shadow-card-hover transition-all duration-300 animate-slide-up"
-				style={{animationDelay: `${0.1 * index}s`}}
-			>
-				<div className="flex items-center mb-6">
-					<div className="p-3 rounded-xl bg-gradient-to-r from-primary-600/20 to-primary-500/20 border border-primary-500/30 group-hover:scale-110 transition-transform duration-300">
-						{competence.icon}
-					</div>
-					<h3 className="text-2xl font-heading font-bold text-white ml-4 group-hover:text-primary-400 transition-colors">
-						{competence.skill}
+	// Génération des cartes de compétences par catégorie
+	const categoryCards = useMemo(() => 
+		SKILLS_DATA.categories.map((category: SkillCategory, categoryIndex: number) => (
+			<div key={category.id} className="mb-16">
+				<div className="text-center mb-12">
+					<h3 className="text-3xl md:text-4xl font-heading font-bold text-white mb-4">
+						{category.title}
 					</h3>
+					<p className="text-slate-300 text-lg max-w-2xl mx-auto">
+						{category.description}
+					</p>
 				</div>
-				<p className="text-slate-300 leading-relaxed">
-					{competence.description}
-				</p>
+				
+				<div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+					{category.skills.map((skill: any, skillIndex: number) => {
+						// Fonction pour rendre l'icône appropriée
+						const renderIcon = () => {
+							if (skill.icon.includes('fas fa-robot')) {
+								return <span className="text-primary-400 text-4xl">🤖</span>;
+							} else if (skill.icon.includes('fas fa-chart-line')) {
+								return <span className="text-secondary-400 text-4xl">📊</span>;
+							} else if (skill.icon.includes('fas fa-brain')) {
+								return <span className="text-indigo-400 text-4xl">🧠</span>;
+							} else {
+								return <i className={`${skill.icon} hover:scale-110 transition-transform duration-300`}></i>;
+							}
+						};
+						
+						return (
+							<div
+								key={skillIndex}
+								className="group card-modern p-8 rounded-2xl shadow-card hover:shadow-card-hover transition-all duration-300 animate-slide-up"
+								style={{animationDelay: `${0.1 * (categoryIndex * 3 + skillIndex)}s`}}
+							>
+								<div className="flex items-center mb-6">
+									<div className="p-3 rounded-xl bg-gradient-to-r from-primary-600/20 to-primary-500/20 border border-primary-500/30 group-hover:scale-110 transition-transform duration-300">
+										{renderIcon()}
+									</div>
+									<h4 className="text-2xl font-heading font-bold text-white ml-4 group-hover:text-primary-400 transition-colors">
+										{skill.skill}
+									</h4>
+								</div>
+								<p className="text-slate-300 leading-relaxed mb-4">
+									{skill.description}
+								</p>
+								<div className="text-sm text-slate-400 italic border-l-2 border-primary-500/30 pl-4">
+									{skill.project}
+								</div>
+							</div>
+						);
+					})}
+				</div>
 			</div>
 		)), []
 	);
 
-	const secondaryCompetencesCards = useMemo(() =>
-		secondaryCompetences.map((competence, index) => (
+	// Génération des compétences complémentaires
+	const complementarySkillsCards = useMemo(() =>
+		SKILLS_DATA.complementarySkills.map((skill: ComplementarySkill, index: number) => (
 			<div
 				key={index}
 				className="group card-modern p-6 rounded-xl shadow-card hover:shadow-card-hover text-center transition-all duration-300 hover:scale-105 animate-slide-up"
-				style={{animationDelay: `${0.05 * index + 0.3}s`}}
+				style={{animationDelay: `${0.05 * index + 0.6}s`}}
 			>
 				<div className="p-3 rounded-lg bg-gradient-to-r from-secondary-600/20 to-secondary-500/20 border border-secondary-500/30 inline-block mb-4 group-hover:scale-110 transition-transform duration-300">
-					{competence.icon}
+					<i className={skill.icon}></i>
 				</div>
-				<h4 className="text-lg font-heading font-semibold text-white group-hover:text-secondary-400 transition-colors">
-					{competence.skill}
-				</h4>
+				<h5 className="text-lg font-heading font-semibold text-white group-hover:text-secondary-400 transition-colors">
+					{skill.skill}
+				</h5>
+				<p className="text-xs text-slate-400 mt-2">{skill.category}</p>
 			</div>
 		)), []
 	);
@@ -111,15 +84,20 @@ const Competences = () => {
 			<h2 className="text-4xl md:text-5xl font-heading font-bold text-center mb-16 text-white">
 				Mes <span className="text-gradient">Compétences</span>
 			</h2>
-			<div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 mb-20">
-				{keyCompetencesCards}
+			
+			{/* Catégories de compétences principales */}
+			<div className="mb-24">
+				{categoryCards}
 			</div>
 
-			<h3 className="text-2xl md:text-3xl font-heading font-semibold text-center mb-12 text-slate-200">
-				Technologies Complémentaires
-			</h3>
-			<div className="grid gap-6 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 max-w-4xl mx-auto">
-				{secondaryCompetencesCards}
+			{/* Compétences complémentaires */}
+			<div className="border-t border-slate-700/50 pt-16">
+				<h3 className="text-2xl md:text-3xl font-heading font-semibold text-center mb-12 text-slate-200">
+					Technologies Complémentaires
+				</h3>
+				<div className="grid gap-6 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 max-w-4xl mx-auto">
+					{complementarySkillsCards}
+				</div>
 			</div>
 		</section>
 	);
