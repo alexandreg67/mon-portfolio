@@ -25,14 +25,14 @@ export default function HomePage() {
             Full Stack
           </span>
         </h1>
-        <p className="text-lg md:text-xl max-w-3xl mx-auto text-slate-300 mb-12 leading-relaxed animate-slide-up" style={{animationDelay: '0.1s'}}>
-          Je conçois et développe des <span className="text-primary-400 font-semibold">architectures microservices scalables </span> 
+        <p className="text-lg md:text-xl max-w-3xl mx-auto text-slate-300 mb-12 leading-relaxed animate-slide-up delay-[0.1s]">
+          Je conçois et développe des <span className="text-primary-400 font-semibold">architectures microservices scalables</span>
           avec des workflows <span className="text-indigo-400 font-semibold">optimisés par l'IA</span>. 
           Spécialisé en solutions haute performance, 
           j'intègre les technologies modernes pour créer des écosystèmes applicatifs robustes et innovants.
         </p>
 
-        <div className="flex flex-col sm:flex-row gap-4 justify-center animate-slide-up" style={{animationDelay: '0.2s'}}>
+        <div className="flex flex-col sm:flex-row gap-4 justify-center animate-slide-up delay-[0.2s]">
           <Link href="/projects">
             <button className="group relative px-8 py-4 bg-gradient-to-r from-primary-600 to-primary-500 text-white font-semibold rounded-xl shadow-glow hover:shadow-card-hover hover:scale-105 transition-all duration-300 overflow-hidden">
               <span className="relative z-10">Voir mes projets</span>
