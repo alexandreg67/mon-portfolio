@@ -34,9 +34,9 @@ const Header: React.FC = () => {
 	}, [isOpen]);
 
 	return (
-		<header className="bg-hero-gradient text-white shadow-custom-dark">
+		<header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-slate-900/80 border-b border-white/10 text-white shadow-card">
 			<div className="container mx-auto flex justify-between items-center py-4 px-6">
-				<Link href="/" className="text-3xl font-headline">
+				<Link href="/" className="text-3xl font-heading font-bold text-gradient hover:scale-105 transition-transform">
 					{SITE_CONFIG.AUTHOR}
 				</Link>
 				<nav className="hidden lg:flex space-x-8" role="navigation" aria-label="Navigation principale">
@@ -44,7 +44,7 @@ const Header: React.FC = () => {
 						<Link
 							key={item.href}
 							href={item.href}
-							className="hover:text-secondary transition duration-300 focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 focus:ring-offset-backgroundStart rounded"
+							className="relative hover:text-primary-400 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-slate-900 rounded px-3 py-2 font-medium after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-gradient-to-r after:from-primary-400 after:to-secondary-400 hover:after:w-full after:transition-all after:duration-300"
 						>
 							{item.label}
 						</Link>
@@ -56,7 +56,7 @@ const Header: React.FC = () => {
 						aria-label={isOpen ? "Fermer le menu de navigation" : "Ouvrir le menu de navigation"}
 						aria-expanded={isOpen}
 						aria-controls="mobile-menu"
-						className="text-white focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 focus:ring-offset-backgroundStart rounded p-1"
+						className="text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-slate-900 rounded p-2 hover:bg-white/10 transition-all"
 					>
 						<svg
 							className="w-8 h-8"
@@ -88,16 +88,16 @@ const Header: React.FC = () => {
 			{/* Menu latéral pour les petits écrans */}
 			<div
 				id="mobile-menu"
-				className={`fixed inset-y-0 left-0 w-64 bg-hero-gradient transform ${
+				className={`fixed inset-y-0 left-0 w-72 backdrop-blur-xl bg-slate-900/90 border-r border-white/10 transform ${
 					isOpen ? 'translate-x-0' : '-translate-x-full'
-				} transition-transform duration-300 ease-in-out z-50 lg:hidden`}
+				} transition-transform duration-300 ease-in-out z-50 lg:hidden shadow-2xl`}
 				aria-hidden={!isOpen}
 			>
-				<div className="flex justify-end p-4">
+				<div className="flex justify-end p-6">
 					<button 
 						onClick={closeMenu} 
 						aria-label="Fermer le menu de navigation"
-						className="text-white focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 focus:ring-offset-backgroundStart rounded p-1"
+						className="text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-slate-900 rounded p-2 hover:bg-white/10 transition-all"
 					>
 						<svg
 							className="w-8 h-8"
@@ -115,12 +115,12 @@ const Header: React.FC = () => {
 						</svg>
 					</button>
 				</div>
-				<nav className="flex flex-col items-start space-y-4 p-4" role="navigation" aria-label="Navigation mobile">
+				<nav className="flex flex-col items-start space-y-2 p-6" role="navigation" aria-label="Navigation mobile">
 					{NAV_ITEMS.map((item) => (
 						<Link
 							key={item.href}
 							href={item.href}
-							className="hover:text-secondary transition duration-300 focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 focus:ring-offset-backgroundStart rounded p-2 w-full text-left"
+							className="w-full p-4 rounded-xl hover:bg-white/10 hover:text-primary-400 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-slate-900 font-medium border border-transparent hover:border-white/20"
 							onClick={closeMenu}
 						>
 							{item.label}

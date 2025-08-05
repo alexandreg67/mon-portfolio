@@ -9,23 +9,87 @@ const config: Config = {
 	theme: {
 		extend: {
 			colors: {
-				primary: '#F95F62',
-				secondary: '#00A676',
-				backgroundStart: '#0F2027',
-				backgroundEnd: '#2C5364',
-				textPrimary: '#FFFFFF',
-				textSecondary: '#D3D3D3',
+				// Modern indigo-based primary palette
+				primary: {
+					50: '#eef2ff',
+					100: '#e0e7ff',
+					400: '#818cf8',
+					500: '#6366f1',
+					600: '#4f46e5',
+					700: '#4338ca',
+					900: '#312e81',
+				},
+				// Refined cyan secondary palette
+				secondary: {
+					400: '#22d3ee',
+					500: '#06b6d4',
+					600: '#0891b2',
+				},
+				// Legacy colors for backward compatibility
+				primaryLegacy: '#F95F62',
+				secondaryLegacy: '#00A676',
+				// Modern neutral palette
+				slate: {
+					50: '#f8fafc',
+					100: '#f1f5f9',
+					200: '#e2e8f0',
+					300: '#cbd5e1',
+					400: '#94a3b8',
+					500: '#64748b',
+					600: '#475569',
+					700: '#334155',
+					800: '#1e293b',
+					900: '#0f172a',
+					950: '#020617',
+				},
+				// Updated background colors
+				backgroundStart: '#0f172a', // slate-900
+				backgroundEnd: '#1e293b',   // slate-800
+				textPrimary: '#ffffff',
+				textSecondary: '#cbd5e1',   // slate-300
 			},
 			fontFamily: {
+				// Modern Inter-based typography
+				heading: ['"Inter Tight"', 'Inter', 'system-ui', 'sans-serif'],
+				body: ['Inter', 'system-ui', 'sans-serif'],
+				elegant: ['"Playfair Display"', 'serif'],
+				// Legacy fonts for backward compatibility
 				headline: ['"Abril Fatface"', 'serif'],
-				body: ['Poppins', 'sans-serif'],
+				bodyLegacy: ['Poppins', 'sans-serif'],
 			},
 			backgroundImage: {
-				'hero-gradient': 'linear-gradient(90deg, #0F2027 0%, #2C5364 100%)',
+				'hero-gradient': 'linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%)',
+				'card-gradient': 'linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%)',
+				'text-gradient': 'linear-gradient(135deg, #818cf8 0%, #22d3ee 100%)',
 			},
 			boxShadow: {
 				'custom-light': '0 4px 6px rgba(0, 0, 0, 0.1)',
 				'custom-dark': '0 4px 6px rgba(0, 0, 0, 0.5)',
+				'glow': '0 0 20px rgba(99, 102, 241, 0.3)',
+				'card': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+				'card-hover': '0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.1)',
+			},
+			backdropBlur: {
+				xs: '2px',
+			},
+			animation: {
+				'gentle-bounce': 'gentle-bounce 3s ease-in-out infinite',
+				'fade-in': 'fade-in 0.5s ease-out',
+				'slide-up': 'slide-up 0.6s ease-out',
+			},
+			keyframes: {
+				'gentle-bounce': {
+					'0%, 100%': { transform: 'translateY(0px)' },
+					'50%': { transform: 'translateY(-10px)' },
+				},
+				'fade-in': {
+					'0%': { opacity: '0' },
+					'100%': { opacity: '1' },
+				},
+				'slide-up': {
+					'0%': { transform: 'translateY(20px)', opacity: '0' },
+					'100%': { transform: 'translateY(0px)', opacity: '1' },
+				},
 			},
 		},
 	},

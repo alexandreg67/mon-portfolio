@@ -15,54 +15,58 @@ export const metadata = generatePageMetadata(
 // Composant Section mis à jour pour une disposition en flex
 const Section: React.FC<SectionProps> = ({ title, items }) => (
 	<section className="container mx-auto px-4 py-10">
-		<h2 className="text-4xl font-headline text-center mb-10 text-white">
-			{title}
+		<h2 className="text-4xl md:text-5xl font-heading font-bold text-center mb-16 text-white">
+			Mes <span className="text-gradient">Projets</span>
 		</h2>
-		<div className="space-y-8">
+		<div className="space-y-12">
 			{items.map((item, index) => (
 				<div
 					key={index}
-					className="flex flex-col md:flex-row bg-white bg-opacity-90 p-6 rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300 ease-in-out w-full max-w-6xl mx-auto"
+					className="group flex flex-col lg:flex-row card-modern p-8 rounded-2xl shadow-card hover:shadow-card-hover transition-all duration-300 w-full max-w-7xl mx-auto animate-slide-up"
+					style={{animationDelay: `${0.1 * index}s`}}
 				>
 					{/* Section de l'image à gauche */}
-					<div className="relative w-full md:w-1/3 mb-4 md:mb-0">
-						<Image
-							src={item.imageUrl}
-							alt={`Capture d'écran du projet ${item.title}`}
-							width={500}
-							height={300}
-							className="rounded-lg w-full h-48 object-cover md:h-auto"
-							loading="lazy"
-							placeholder="blur"
-							blurDataURL={BLUR_PLACEHOLDER_SVG}
-						/>
+					<div className="relative w-full lg:w-2/5 mb-6 lg:mb-0 lg:mr-8">
+						<div className="relative overflow-hidden rounded-2xl shadow-lg group-hover:shadow-xl transition-all duration-300">
+							<Image
+								src={item.imageUrl}
+								alt={`Capture d'écran du projet ${item.title}`}
+								width={600}
+								height={400}
+								className="w-full h-64 lg:h-72 object-cover group-hover:scale-105 transition-transform duration-300"
+								loading="lazy"
+								placeholder="blur"
+								blurDataURL={BLUR_PLACEHOLDER_SVG}
+							/>
+							<div className="absolute inset-0 bg-gradient-to-t from-slate-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+						</div>
 					</div>
 					{/* Section du texte à droite */}
-					<div className="md:w-2/3 md:pl-6 flex flex-col justify-center">
-						<h3 className="text-3xl font-semibold text-primary mb-2">
+					<div className="lg:w-3/5 flex flex-col justify-center">
+						<h3 className="text-lg font-semibold text-secondary-400 mb-2 uppercase tracking-wide">
 							{item.type}
 						</h3>
-						<h4 className="text-2xl font-semibold text-gray-900 mb-2">
+						<h4 className="text-3xl lg:text-4xl font-heading font-bold text-white mb-4 group-hover:text-primary-400 transition-colors">
 							{item.title}
 						</h4>
-						<div className="text-gray-700 mb-4">{item.description}</div>
-						<div className="flex flex-wrap gap-2 mb-4">
+						<div className="text-slate-300 mb-6 leading-relaxed text-lg">{item.description}</div>
+						<div className="flex flex-wrap gap-3 mb-8">
 							{item.technologies.map((tech, i) => (
 								<span
 									key={i}
-									className="bg-primary text-white px-3 py-1 rounded-full text-sm"
+									className="bg-gradient-to-r from-primary-600/20 to-primary-500/20 border border-primary-500/30 text-primary-300 px-4 py-2 rounded-xl text-sm font-medium backdrop-blur-sm"
 								>
 									{tech}
 								</span>
 							))}
 						</div>
-						<div className="flex space-x-4 mt-4">
+						<div className="flex flex-wrap gap-4">
 							{item.liveLink && (
 								<a
 									href={item.liveLink}
 									target="_blank"
 									rel="noopener noreferrer"
-									className="text-secondary hover:text-secondary-dark transition duration-300 flex items-center focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 rounded"
+									className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-secondary-600 to-secondary-500 text-white font-semibold rounded-xl hover:from-secondary-500 hover:to-secondary-400 hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-secondary-500 focus:ring-offset-2 focus:ring-offset-slate-900"
 									aria-label={`Voir le projet ${item.title} en direct`}
 								>
 									<FaExternalLinkAlt className="mr-2" aria-hidden="true" />
@@ -73,7 +77,7 @@ const Section: React.FC<SectionProps> = ({ title, items }) => (
 								href={item.codeLink}
 								target="_blank"
 								rel="noopener noreferrer"
-								className="text-secondary hover:text-secondary-dark transition duration-300 flex items-center focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 rounded"
+								className="inline-flex items-center px-6 py-3 bg-transparent border-2 border-slate-600 text-slate-300 font-semibold rounded-xl hover:border-slate-500 hover:text-white hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 focus:ring-offset-slate-900"
 								aria-label={`Voir le code source du projet ${item.title}`}
 							>
 								<FaGithub className="mr-2" aria-hidden="true" />

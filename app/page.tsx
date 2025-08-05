@@ -10,30 +10,41 @@ export default function HomePage() {
 
 
   return (
-    <div className="min-h-screen text-white flex flex-col items-center justify-center px-4 md:px-8">
+    <div className="min-h-screen text-white flex flex-col items-center justify-center px-4 md:px-8 relative overflow-hidden">
+      {/* Subtle animated background elements */}
+      <div className="absolute inset-0 opacity-20">
+        <div className="absolute top-20 left-10 w-72 h-72 bg-primary-500/20 rounded-full blur-3xl animate-gentle-bounce"></div>
+        <div className="absolute bottom-32 right-16 w-96 h-96 bg-secondary-500/15 rounded-full blur-3xl animate-gentle-bounce" style={{animationDelay: '1s'}}></div>
+      </div>
+
       {/* Section de bienvenue */}
-      <div className="text-center mt-10">
-        <h1 className="text-5xl font-headline mb-6">
-          Je crée des expériences numériques exceptionnelles
+      <div className="text-center mt-10 relative z-10 animate-fade-in">
+        <h1 className="text-4xl md:text-6xl lg:text-7xl font-heading font-bold mb-8 leading-tight">
+          Je crée des 
+          <span className="text-gradient block mt-2">
+            expériences numériques
+          </span>
+          <span className="text-slate-200">exceptionnelles</span>
         </h1>
-        <p className="text-xl font-body text-textSecondary mb-6">
-          Développeur spécialisé en <strong>Next.js</strong>,{" "}
-          <strong>React</strong> et <strong>Tailwind CSS</strong>. Diplômé RNCP6
-          (Bac+3/4) en Développement Web, je crée des solutions modernes et
+        <p className="text-lg md:text-xl max-w-3xl mx-auto text-slate-300 mb-10 leading-relaxed animate-slide-up">
+          Développeur spécialisé en <span className="text-primary-400 font-semibold">Next.js</span>,{" "}
+          <span className="text-primary-400 font-semibold">React</span> et <span className="text-secondary-400 font-semibold">Tailwind CSS</span>. 
+          Diplômé RNCP6 (Bac+3/4) en Développement Web, je crée des solutions modernes et
           performantes pour le web. Explorez mes projets et contactez-moi pour
           collaborer sur des solutions innovantes.
         </p>
 
-        <div className="flex space-x-4 justify-center">
+        <div className="flex flex-col sm:flex-row gap-4 justify-center animate-slide-up" style={{animationDelay: '0.2s'}}>
           <Link href="/projects">
-            <button className="px-6 py-3 bg-primary text-white font-bold rounded shadow-custom-dark hover:bg-secondary transition duration-300">
-              Voir mes projets
+            <button className="group relative px-8 py-4 bg-gradient-to-r from-primary-600 to-primary-500 text-white font-semibold rounded-xl shadow-glow hover:shadow-card-hover hover:scale-105 transition-all duration-300 overflow-hidden">
+              <span className="relative z-10">Voir mes projets</span>
+              <div className="absolute inset-0 bg-gradient-to-r from-primary-500 to-primary-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             </button>
           </Link>
           <button
             onClick={openModal}
             aria-label="Ouvrir le formulaire de contact"
-            className="px-6 py-3 bg-primary text-white font-bold rounded shadow-custom-dark hover:bg-secondary transition duration-300"
+            className="group relative px-8 py-4 bg-transparent border-2 border-secondary-500 text-secondary-400 font-semibold rounded-xl hover:bg-secondary-500 hover:text-white hover:scale-105 transition-all duration-300"
           >
             Discutons ensemble
           </button>
@@ -41,32 +52,34 @@ export default function HomePage() {
       </div>
 
       {/* Section Projets en avant */}
-      <div className="w-full max-w-5xl mt-16">
-        <h2 className="text-4xl font-headline text-center mb-8">
-          Aperçu de mes projets
+      <div className="w-full max-w-6xl mt-20 relative z-10">
+        <h2 className="text-3xl md:text-4xl font-heading font-bold text-center mb-12">
+          Aperçu de mes <span className="text-gradient">projets</span>
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {FEATURED_PROJECTS.map((project) => (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {FEATURED_PROJECTS.map((project, index) => (
             <div
               key={project.id}
-              className="bg-white bg-opacity-90 p-6 rounded-lg shadow-custom-light"
+              className="group card-modern p-8 rounded-2xl shadow-card hover:shadow-card-hover transition-all duration-300 animate-slide-up"
+              style={{animationDelay: `${0.1 * index}s`}}
               role="article"
               aria-labelledby={`project-title-${project.id}`}
             >
-              <h3 id={`project-title-${project.id}`} className="text-2xl font-bold text-gray-900 mb-2">
+              <h3 id={`project-title-${project.id}`} className="text-2xl font-heading font-bold text-white mb-4 group-hover:text-primary-400 transition-colors">
                 {project.title}
               </h3>
-              <p className="text-lg text-gray-700 mb-4">
+              <p className="text-slate-300 mb-6 leading-relaxed">
                 {project.description}
               </p>
               <Link 
                 href={project.link}
-                className="text-primary hover:underline focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded"
+                className="inline-flex items-center text-secondary-400 hover:text-secondary-300 font-semibold focus:outline-none focus:ring-2 focus:ring-secondary-500 focus:ring-offset-2 focus:ring-offset-slate-900 rounded-lg p-2 -m-2 transition-all group"
                 aria-label={`Voir les détails du projet ${project.title}`}
               >
-                <p className="text-primary hover:underline">
-                  Découvrir ce projet
-                </p>
+                Découvrir ce projet
+                <svg className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
               </Link>
             </div>
           ))}
@@ -74,12 +87,12 @@ export default function HomePage() {
       </div>
 
       {/* Animation scroll to about */}
-      <div className="mt-20 flex flex-col items-center justify-center">
-        <p className="text-lg text-textSecondary mb-4">
+      <div className="mt-20 flex flex-col items-center justify-center relative z-10">
+        <p className="text-lg text-slate-300 mb-6 text-center">
           Vous souhaitez en savoir plus sur moi ?
         </p>
         <Link href="/about">
-          <button className="px-6 py-3 bg-primary text-white font-bold rounded shadow-custom-dark hover:bg-secondary transition duration-300">
+          <button className="px-8 py-4 bg-transparent border-2 border-primary-500 text-primary-400 font-semibold rounded-xl hover:bg-primary-500 hover:text-white hover:scale-105 transition-all duration-300">
             À propos de moi
           </button>
         </Link>
