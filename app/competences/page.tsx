@@ -22,40 +22,28 @@ const keyCompetences = [
 		icon: <i className="devicon-react-original colored text-4xl"></i>,
 	},
 	{
-		skill: 'Redux',
-		description:
-			"Gestion efficace de l'état des applications complexes avec Redux.",
-		project:
-			"Implémentation de Redux dans une application de e-learning, facilitant la gestion de l'état pour plusieurs milliers d'utilisateurs.",
-		icon: <i className="devicon-redux-original colored text-4xl"></i>,
+		skill: 'Express',
+		description: 'Développement de serveurs REST performants avec Express, intégrant la logique métier et la sécurité.',
+		project: 'Créé une API Express pour une application SaaS, réduisant le temps de réponse moyen de 30 %.',
+		icon: <i className="devicon-express-original text-white text-4xl"></i>,
 	},
 	{
-		skill: 'TypeScript',
-		description:
-			'Typed JavaScript pour améliorer la sécurité et la maintenabilité du code.',
-		project:
-			"Migration d'une grande base de code JavaScript vers TypeScript, réduisant les bugs de 15% et augmentant la maintenabilité.",
-		icon: <i className="devicon-typescript-plain colored text-4xl"></i>,
+		skill: 'Docker',
+		description: 'Containerisation d\'applications pour assurer la portabilité et des déploiements reproductibles.',
+		project: 'Containerisé une suite micro-services, divisant par deux les incidents "it-works-on-my-machine".',
+		icon: <i className="devicon-docker-plain colored text-4xl"></i>,
 	},
 	{
-		skill: 'Tailwind CSS',
-		description:
-			'Création de designs modernes et responsives avec Tailwind CSS.',
-		project:
-			"Développement d'une interface utilisateur réactive pour un tableau de bord d'analyse, augmentant la satisfaction utilisateur de 25%.",
-		icon: (
-			<Image
-				src="/tailwindcss.svg" // Utilisation de l'icône SVG locale
-				alt="Tailwind CSS"
-				width={40}
-				height={40}
-				className="filter"
-				style={{
-					filter:
-						'invert(40%) sepia(100%) saturate(1000%) hue-rotate(180deg) brightness(100%) contrast(90%)',
-				}}
-			/>
-		),
+		skill: 'PostgreSQL',
+		description: 'Conception et optimisation de bases de données relationnelles robustes avec PostgreSQL.',
+		project: 'Optimisé des requêtes PostgreSQL pour un CRM, divisant le temps de génération de rapports par 4.',
+		icon: <i className="devicon-postgresql-plain colored text-4xl"></i>,
+	},
+	{
+		skill: 'GraphQL',
+		description: 'Création de schémas GraphQL et résolveurs pour des APIs flexibles et typées.',
+		project: 'Implémenté GraphQL sur un portail média, réduisant de 40 % le volume des données transférées.',
+		icon: <i className="devicon-graphql-plain colored text-4xl"></i>,
 	},
 ];
 
