@@ -78,4 +78,22 @@ export const PROJECTS: Project[] = [
 			<strong>Compétences clés :</strong> IA, UX/UI, Développement de jeux.
 		</>
 	)),
+	createProject(3, (
+		<>
+			<strong>Objectif :</strong> Créer un jeu de tir spatial immersif en 2D avec des mécaniques de jeu modernes.
+			<br />
+			<ul className="list-disc ml-6">
+				<li>
+					<strong>Gameplay :</strong> Jeu de tir spatial avec ennemis, système de boucliers, effets visuels et audio immersifs.
+				</li>
+				<li>
+					<strong>Moteur 2D :</strong> React Konva pour un rendu 2D performant avec gestion des particules et effets dynamiques.
+				</li>
+				<li>
+					<strong>État global :</strong> Zustand pour la gestion optimisée de l'état du jeu (score, vies, niveau).
+				</li>
+			</ul>
+			<strong>Compétences clés :</strong> 2D, Performance, UX/UI, TypeScript
+		</>
+	)),
 ];
