@@ -87,7 +87,7 @@ export const PROJECTS: Project[] = [
 					<strong>Gameplay :</strong> Jeu de tir spatial avec ennemis, système de boucliers, effets visuels et audio immersifs.
 				</li>
 				<li>
-					<strong>Moteur 3D :</strong> Three.js via @react-three/fiber pour un rendu 3D performant avec particules et éclairages dynamiques.
+					<strong>Moteur 2D :</strong> React Konva pour un rendu 2D performant avec gestion des particules et effets dynamiques.
 				</li>
 				<li>
 					<strong>État global :</strong> Zustand pour la gestion optimisée de l'état du jeu (score, vies, niveau).

@@ -115,7 +115,7 @@ export const PROJECTS_DATA = [
 		codeLink: 'https://github.com/alexandreg67/puissance4_react',
 	},
 	{
-		type: 'Jeu',
+		type: 'Jeu 2D',
 		title: 'Space Shooter Game – Jeu de Tir Spatial 2D',
 		technologies: ['React 19', 'Next.js 15', 'TypeScript', 'React Konva', 'Zustand', 'Object Pooling', 'QuadTree', 'ECS'],
 		imageUrl: '/spacegame.png',
