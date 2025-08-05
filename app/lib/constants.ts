@@ -60,6 +60,12 @@ export const FEATURED_PROJECTS = [
 		description: 'Jeu Puissance 4 développé avec Next.js, React et TypeScript, permettant de jouer soit contre un autre joueur soit contre une IA. Défiez l\'ordinateur et essayez de gagner !',
 		link: '/projects#3',
 	},
+	{
+		id: 4,
+		title: 'Space Shooter Game – Jeu de Tir Spatial 2D',
+		description: 'Jeu de tir spatial 2D haute performance avec architecture ECS, Object Pooling et QuadTree. Développé avec React 19, Next.js 15 et React Konva pour maintenir 60fps constant.',
+		link: '/projects#4',
+	},
 ] as const;
 
 // Configuration des projets avec descriptions texte simples
@@ -107,5 +113,13 @@ export const PROJECTS_DATA = [
 		imageUrl: '/puissance4.png',
 		liveLink: 'https://puissance4-react.vercel.app/',
 		codeLink: 'https://github.com/alexandreg67/puissance4_react',
+	},
+	{
+		type: 'Jeu',
+		title: 'Space Shooter Game – Jeu de Tir Spatial 2D',
+		technologies: ['React 19', 'Next.js 15', 'TypeScript', 'React Konva', 'Zustand', 'Object Pooling', 'QuadTree', 'ECS'],
+		imageUrl: '/spacegame.png',
+		liveLink: 'https://space-game.vercel.app',
+		codeLink: 'https://github.com/alexandreg67/space-game',
 	},
 ] as const;
