@@ -26,7 +26,7 @@ export default function HomePage() {
           </span>
         </h1>
         <p className="text-lg md:text-xl max-w-3xl mx-auto text-slate-300 mb-12 leading-relaxed animate-slide-up delay-[0.1s]">
-          Je conçois et développe des <span className="text-primary-400 font-semibold">architectures microservices scalables</span>
+          Je conçois et développe des <span className="text-primary-400 font-semibold">architectures microservices scalables </span>
           avec des workflows <span className="text-indigo-400 font-semibold">optimisés par l'IA</span>. 
           Spécialisé en solutions haute performance, 
           j'intègre les technologies modernes pour créer des écosystèmes applicatifs robustes et innovants.
