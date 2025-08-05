@@ -29,9 +29,10 @@ export default function HomePage() {
         <p className="text-lg md:text-xl max-w-3xl mx-auto text-slate-300 mb-10 leading-relaxed animate-slide-up">
           Développeur spécialisé en <span className="text-primary-400 font-semibold">Next.js</span>,{" "}
           <span className="text-primary-400 font-semibold">React</span> et <span className="text-secondary-400 font-semibold">Tailwind CSS</span>. 
-          Diplômé RNCP6 (Bac+3/4) en Développement Web, je crée des solutions modernes et
-          performantes pour le web. Explorez mes projets et contactez-moi pour
-          collaborer sur des solutions innovantes.
+          Diplômé RNCP6 (Bac+3/4) en Développement Web, j'intègre les{" "}
+          <span className="text-indigo-400 font-semibold">outils IA modernes</span> pour créer des solutions 
+          web performantes et innovantes. Explorez mes projets et contactez-moi pour
+          collaborer sur des solutions d'avant-garde.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center animate-slide-up" style={{animationDelay: '0.2s'}}>

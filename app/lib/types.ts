@@ -57,9 +57,29 @@ export interface NavItem {
 
 // Types pour les compétences et formations
 export interface Skill {
-	name: string;
-	level: number;
-	category: string;
+	readonly skill: string;
+	readonly description: string;
+	readonly project: string;
+	readonly icon: string;
+	readonly level: 'expert' | 'advanced' | 'intermediate';
+}
+
+export interface SkillCategory {
+	readonly id: string;
+	readonly title: string;
+	readonly description: string;
+	readonly skills: readonly Skill[];
+}
+
+export interface ComplementarySkill {
+	readonly skill: string;
+	readonly icon: string;
+	readonly category: string;
+}
+
+export interface SkillsData {
+	readonly categories: readonly SkillCategory[];
+	readonly complementarySkills: readonly ComplementarySkill[];
 }
 
 export interface Formation {
