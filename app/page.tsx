@@ -20,22 +20,19 @@ export default function HomePage() {
       {/* Section de bienvenue */}
       <div className="text-center mt-10 relative z-10 animate-fade-in">
         <h1 className="text-4xl md:text-6xl lg:text-7xl font-heading font-bold mb-8 leading-tight">
-          Je crée des 
+          Développeur 
           <span className="text-gradient block mt-2">
-            expériences numériques
+            Full Stack
           </span>
-          <span className="text-slate-200">exceptionnelles</span>
         </h1>
-        <p className="text-lg md:text-xl max-w-3xl mx-auto text-slate-300 mb-10 leading-relaxed animate-slide-up">
-          Développeur spécialisé en <span className="text-primary-400 font-semibold">Next.js</span>,{" "}
-          <span className="text-primary-400 font-semibold">React</span> et <span className="text-secondary-400 font-semibold">Tailwind CSS</span>. 
-          Diplômé RNCP6 (Bac+3/4) en Développement Web, j'intègre les{" "}
-          <span className="text-indigo-400 font-semibold">outils IA modernes</span> pour créer des solutions 
-          web performantes et innovantes. Explorez mes projets et contactez-moi pour
-          collaborer sur des solutions d'avant-garde.
+        <p className="text-lg md:text-xl max-w-3xl mx-auto text-slate-300 mb-12 leading-relaxed animate-slide-up delay-[0.1s]">
+          Je conçois et développe des <span className="text-primary-400 font-semibold">architectures microservices scalables</span>
+          avec des workflows <span className="text-indigo-400 font-semibold">optimisés par l'IA</span>. 
+          Spécialisé en solutions haute performance, 
+          j'intègre les technologies modernes pour créer des écosystèmes applicatifs robustes et innovants.
         </p>
 
-        <div className="flex flex-col sm:flex-row gap-4 justify-center animate-slide-up" style={{animationDelay: '0.2s'}}>
+        <div className="flex flex-col sm:flex-row gap-4 justify-center animate-slide-up delay-[0.2s]">
           <Link href="/projects">
             <button className="group relative px-8 py-4 bg-gradient-to-r from-primary-600 to-primary-500 text-white font-semibold rounded-xl shadow-glow hover:shadow-card-hover hover:scale-105 transition-all duration-300 overflow-hidden">
               <span className="relative z-10">Voir mes projets</span>
