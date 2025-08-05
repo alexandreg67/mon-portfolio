@@ -119,7 +119,7 @@ export const PROJECTS_DATA = [
 		title: 'Space Shooter Game – Jeu de Tir Spatial 2D',
 		technologies: ['React 19 (Latest)', 'Next.js 15 (App Router)', 'TypeScript', 'React Konva', 'Zustand', 'Object Pooling', 'QuadTree', 'ECS Architecture'],
 		imageUrl: '/spacegame.png',
-		liveLink: 'https://space-game.vercel.app',
+		liveLink: 'https://space-game-beryl.vercel.app/',
 		codeLink: 'https://github.com/alexandreg67/space-game',
 	},
 ] as const;
