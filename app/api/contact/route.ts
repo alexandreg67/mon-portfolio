@@ -19,6 +19,15 @@ export async function POST(request: Request) {
 			);
 		}
 
+		// Configuration des emails (avec valeurs par défaut)
+		const emailConfig = {
+			fromDomain: process.env.EMAIL_FROM_DOMAIN || 'onboarding@resend.dev',
+			fromName: process.env.EMAIL_FROM_NAME || 'Alexandre Graff',
+			fromNamePortfolio: process.env.EMAIL_FROM_PORTFOLIO || 'Portfolio Contact',
+			adminAddress: process.env.EMAIL_ADMIN_ADDRESS || 'alexgraff67@gmail.com'
+		};
+
+
 		const { firstName, lastName, email, message } = await request.json();
 
 		const contactSchema = z.object({
@@ -66,7 +75,7 @@ export async function POST(request: Request) {
 		try {
 			// Email de confirmation à l'utilisateur
 			await resend.emails.send({
-				from: 'Alexandre Graff <onboarding@resend.dev>', // Domaine de test Resend
+				from: `${emailConfig.fromName} <${emailConfig.fromDomain}>`,
 				to: [email],
 				subject: 'Confirmation de votre message',
 				text: `Bonjour ${firstName} ${lastName},\n\nMerci de m'avoir contacté. Je vous confirme que j'ai bien reçu votre message :\n\n"${message}"\n\nJe vais le traiter avec la plus grande attention et je reviendrai vers vous dans les meilleurs délais.\n\nN'hésitez pas à me recontacter si vous avez d'autres questions ou si vous souhaitez ajouter des informations complémentaires.\n\nCordialement,\n\nAlexandre`,
@@ -74,11 +83,22 @@ export async function POST(request: Request) {
 
 			// Email de notification pour vous
 			await resend.emails.send({
-				from: 'Portfolio Contact <onboarding@resend.dev>', // Domaine de test Resend
-				to: ['alexgraff67@gmail.com'],
-				subject: 'Nouveau message de contact via votre portfolio',
-				replyTo: email, // Permet de répondre directement à l'utilisateur
-				text: `Vous avez reçu un nouveau message de contact via votre portfolio.\n\nNom : ${firstName} ${lastName}\n\nEmail : ${email}\n\nMessage :\n\n${message}\n\nVeuillez répondre à cet email dans les meilleurs délais pour assurer une bonne communication.`,
+				from: `${emailConfig.fromNamePortfolio} <${emailConfig.fromDomain}>`,
+				to: [emailConfig.adminAddress],
+				subject: `Nouveau message de ${firstName} ${lastName}`,
+				replyTo: email,
+				text: `Nouveau message de contact reçu via votre portfolio.
+
+INFORMATIONS DE CONTACT :
+• Prénom : ${firstName}
+• Nom : ${lastName}  
+• Email : ${email}
+
+MESSAGE :
+${message}
+
+---
+Pour répondre, utilisez directement la fonction "Répondre" de votre messagerie.`,
 			});
 
 		return NextResponse.json({ message: 'Email envoyé avec succès' });
