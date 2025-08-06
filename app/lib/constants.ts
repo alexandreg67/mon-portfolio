@@ -43,6 +43,12 @@ export const BLUR_PLACEHOLDER_SVG = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iN
 // Projets mis en avant sur la page d'accueil
 export const FEATURED_PROJECTS = [
 	{
+		id: 0,
+		title: 'PIM (Product Information Management) Platform',
+		description: 'Plateforme moderne de gestion d\'informations produits avec architecture microservices enterprise-grade. TypeScript, React 18, GraphQL, Docker, PostgreSQL et Redis pour une solution professionnelle complète.',
+		link: '/projects#0',
+	},
+	{
 		id: 1,
 		title: 'Optimisation SEO et Accessibilité',
 		description: 'Projet de formation : Optimisation des performances et de l\'accessibilité d\'un site web pour améliorer son référencement et son expérience utilisateur.',
@@ -63,13 +69,31 @@ export const FEATURED_PROJECTS = [
 	{
 		id: 4,
 		title: 'Space Shooter Game – Jeu de Tir Spatial 2D',
-		description: 'Jeu de tir spatial 2D haute performance utilisant React 19 (nouvelles features), Next.js 15 (App Router optimisé) et React Konva. Architecture ECS avancée avec Object Pooling et QuadTree pour 60fps constant.',
+		description: 'Jeu de tir spatial 2D utilisant React 19 (nouvelles features), Next.js 15 (App Router optimisé) et React Konva. Architecture ECS avancée avec Object Pooling et QuadTree pour 60fps constant.',
 		link: '/projects#4',
 	},
 ] as const;
 
 // Configuration des projets avec descriptions texte simples
 export const PROJECTS_DATA = [
+	{
+		type: 'Plateforme PIM',
+		title: 'PIM (Product Information Management) Platform',
+		technologies: [
+			'TypeScript',
+			'React 18',
+			'GraphQL',
+			'Material-UI',
+			'Redux Toolkit',
+			'Docker',
+			'PostgreSQL',
+			'Redis',
+			'Node.js',
+			'Microservices',
+		],
+		imageUrl: '/pim.png',
+		codeLink: 'https://github.com/alexandreg67/pim',
+	},
 	{
 		type: 'Optimisation Web',
 		title: 'Optimisation SEO et Accessibilité',

@@ -11,6 +11,27 @@ const createProject = (index: number, description: React.ReactNode): Project => 
 export const PROJECTS: Project[] = [
 	createProject(0, (
 		<>
+			<strong>Objectif :</strong> Plateforme moderne de gestion d'informations produits avec architecture microservices et fonctionnalités enterprise-grade.
+			<br />
+			<ul className="list-disc ml-6">
+				<li>
+					<strong>Architecture Microservices :</strong> 5 services indépendants avec communication via API REST/GraphQL et réseau Docker interne.
+				</li>
+				<li>
+					<strong>Sécurité Enterprise :</strong> JWT, RBAC, chiffrement bcrypt, limitation de taux, audit trails complets.
+				</li>
+				<li>
+					<strong>Performance Avancée :</strong> Cache Redis avec invalidation intelligente, recherche full-text PostgreSQL, optimisation d'images.
+				</li>
+				<li>
+					<strong>Stack Moderne :</strong> TypeScript strict, React 18, GraphQL, Material-UI, Docker, tests complets.
+				</li>
+			</ul>
+			<strong>Compétences clés :</strong> Architecture microservices, sécurité enterprise, optimisation performance, TypeScript avancé, DevOps.
+		</>
+	)),
+	createProject(1, (
+		<>
 			<strong>Objectif :</strong> Améliorer les performances, le référencement
 			(SEO) et l'accessibilité d'un site web.
 			<br />
@@ -33,7 +54,7 @@ export const PROJECTS: Project[] = [
 			<strong>Compétences clés :</strong> SEO, Accessibilité, Performance Web.
 		</>
 	)),
-	createProject(1, (
+	createProject(2, (
 		<>
 			<strong>Objectif :</strong> Créer un tableau de bord interactif
 			affichant des données en temps réel.
@@ -56,7 +77,7 @@ export const PROJECTS: Project[] = [
 			Graphiques interactifs.
 		</>
 	)),
-	createProject(2, (
+	createProject(3, (
 		<>
 			<strong>Objectif :</strong> Développer un jeu de Puissance 4 jouable
 			contre un autre joueur ou contre une IA.
@@ -78,7 +99,7 @@ export const PROJECTS: Project[] = [
 			<strong>Compétences clés :</strong> IA, UX/UI, Développement de jeux.
 		</>
 	)),
-	createProject(3, (
+	createProject(4, (
 		<>
 			<strong>Objectif :</strong> Créer un jeu de tir spatial immersif en 2D avec des mécaniques de jeu modernes.
 			<br />
