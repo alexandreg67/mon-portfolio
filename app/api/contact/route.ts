@@ -23,7 +23,7 @@ export async function POST(request: Request) {
 		const emailConfig = {
 			fromDomain: process.env.EMAIL_FROM_DOMAIN || 'onboarding@resend.dev',
 			fromName: process.env.EMAIL_FROM_NAME || 'Alexandre Graff',
-			fromPortfolio: process.env.EMAIL_FROM_PORTFOLIO || 'Portfolio Contact',
+			fromNamePortfolio: process.env.EMAIL_FROM_PORTFOLIO || 'Portfolio Contact',
 			adminAddress: process.env.EMAIL_ADMIN_ADDRESS || 'alexgraff67@gmail.com'
 		};
 
