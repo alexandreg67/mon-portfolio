@@ -33,7 +33,7 @@ const Section: React.FC<SectionProps> = ({ title, items }) => (
 								alt={`Capture d'écran du projet ${item.title}`}
 								width={600}
 								height={400}
-								className="w-full h-64 lg:h-72 object-cover group-hover:scale-105 transition-transform duration-300"
+								className="w-full h-64 lg:h-72 object-cover object-top group-hover:scale-105 transition-transform duration-300"
 								loading="lazy"
 								placeholder="blur"
 								blurDataURL={BLUR_PLACEHOLDER_SVG}
