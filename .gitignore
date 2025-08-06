@@ -39,3 +39,6 @@ next-env.d.ts
 # ai agents
 CLAUDE.md
 .crush
+
+# Claude Code settings (contains permissions and should not be shared)
+.claude/
