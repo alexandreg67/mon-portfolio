@@ -72,6 +72,12 @@ export const FEATURED_PROJECTS = [
 		description: 'Jeu de tir spatial 2D utilisant React 19 (nouvelles features), Next.js 15 (App Router optimisé) et React Konva. Architecture ECS avancée avec Object Pooling et QuadTree pour 60fps constant.',
 		link: '/projects#4',
 	},
+	{
+		id: 5,
+		title: 'Environnement de Hacking Éthique',
+		description: 'Environnement complet d\'apprentissage du hacking éthique et des tests de pénétration. Shell interactif avec outils intégrés : Nmap, SQLMap, Hydra, Wireshark. Approche éducative avec environnements vulnérables (DVWA, Metasploitable).',
+		link: '/projects#5',
+	},
 ] as const;
 
 // Configuration des projets avec descriptions texte simples
@@ -145,6 +151,24 @@ export const PROJECTS_DATA = [
 		imageUrl: '/spacegame.png',
 		liveLink: 'https://space-game-beryl.vercel.app/',
 		codeLink: 'https://github.com/alexandreg67/space-game',
+	},
+	{
+		type: 'Environnement d\'Apprentissage',
+		title: 'Environnement de Hacking Éthique',
+		technologies: [
+			'Bash',
+			'Shell Scripting', 
+			'Cybersécurité',
+			'Nmap',
+			'SQLMap',
+			'Hydra',
+			'Wireshark',
+			'Docker',
+			'Linux',
+			'Tests de Pénétration'
+		],
+		imageUrl: '/hack_ethique.png',
+		codeLink: '#',
 	},
 ] as const;
 
