@@ -117,4 +117,27 @@ export const PROJECTS: Project[] = [
 			<strong>Compétences clés :</strong> 2D, Performance, UX/UI, TypeScript
 		</>
 	)),
+	createProject(5, (
+		<>
+			<strong>Objectif :</strong> Créer un environnement complet d'apprentissage du hacking éthique et des tests de pénétration à des fins éducatives.
+			<br />
+			<ul className="list-disc ml-6">
+				<li>
+					<strong>Menu Interactif :</strong> Shell avec interface riche utilisant des scripts Bash pour organiser et lancer tous les outils de cybersécurité.
+				</li>
+				<li>
+					<strong>Outils Intégrés :</strong> Suite complète d'outils professionnels (Nmap, SQLMap, Hydra, Wireshark, Aircrack-ng, John the Ripper, Hashcat).
+				</li>
+				<li>
+					<strong>Environnements de Test :</strong> Machines virtuelles vulnérables incluses (DVWA, Metasploitable, OWASP WebGoat) pour l'apprentissage sécurisé.
+				</li>
+				<li>
+					<strong>Documentation :</strong> Guides méthodologiques détaillés et organisation structurée des résultats de tests.
+				</li>
+			</ul>
+			<strong>Usage légal uniquement :</strong> Environnement strictement éducatif pour l'apprentissage des techniques de sécurité défensive.
+			<br />
+			<strong>Compétences clés :</strong> Cybersécurité, Tests de pénétration, Shell scripting, Sécurité réseau, Analyse de vulnérabilités.
+		</>
+	)),
 ];

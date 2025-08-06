@@ -73,16 +73,24 @@ const Section: React.FC<SectionProps> = ({ title, items }) => (
 									Voir en Direct
 								</a>
 							)}
-							<a
-								href={item.codeLink}
-								target="_blank"
-								rel="noopener noreferrer"
-								className="inline-flex items-center px-6 py-3 bg-transparent border-2 border-slate-600 text-slate-300 font-semibold rounded-xl hover:border-slate-500 hover:text-white hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 focus:ring-offset-slate-900"
-								aria-label={`Voir le code source du projet ${item.title}`}
-							>
-								<FaGithub className="mr-2" aria-hidden="true" />
-								Voir le Code
-							</a>
+							{item.codeLink && item.codeLink !== '#' && (
+								<a
+									href={item.codeLink}
+									target="_blank"
+									rel="noopener noreferrer"
+									className="inline-flex items-center px-6 py-3 bg-transparent border-2 border-slate-600 text-slate-300 font-semibold rounded-xl hover:border-slate-500 hover:text-white hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 focus:ring-offset-slate-900"
+									aria-label={`Voir le code source du projet ${item.title}`}
+								>
+									<FaGithub className="mr-2" aria-hidden="true" />
+									Voir le Code
+								</a>
+							)}
+							{item.codeLink === '#' && (
+								<div className="inline-flex items-center px-6 py-3 bg-slate-800 border-2 border-slate-700 text-slate-500 font-semibold rounded-xl">
+									<FaGithub className="mr-2" aria-hidden="true" />
+									Repository Privé
+								</div>
+							)}
 						</div>
 					</div>
 				</div>
