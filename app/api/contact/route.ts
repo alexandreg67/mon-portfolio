@@ -83,7 +83,7 @@ export async function POST(request: Request) {
 
 			// Email de notification pour vous
 			await resend.emails.send({
-				from: `${emailConfig.fromPortfolio} <${emailConfig.fromDomain}>`,
+				from: `${emailConfig.fromNamePortfolio} <${emailConfig.fromDomain}>`,
 				to: [emailConfig.adminAddress],
 				subject: `Nouveau message de ${firstName} ${lastName}`,
 				replyTo: email,
