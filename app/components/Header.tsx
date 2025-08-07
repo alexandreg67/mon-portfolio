@@ -16,6 +16,14 @@ import {
   Bars3Icon,
 } from "@heroicons/react/24/outline";
 
+// Utilitaire pour générer les initiales à partir du nom complet
+const getInitials = (fullName: string): string => {
+  return fullName
+    .split(" ")
+    .map((name) => name.charAt(0).toUpperCase())
+    .join("");
+};
+
 const Header: React.FC = () => {
   const { isOpen, toggleMenu, closeMenu } = useMobileMenu();
   const pathname = usePathname();
@@ -134,7 +142,7 @@ const Header: React.FC = () => {
       {/* Overlay pour fermer le menu */}
       {isOpen && (
         <div
-          className="fixed inset-0 menu-backdrop z-[59] transition-all duration-500"
+          className="fixed inset-0 menu-backdrop z-overlay transition-all duration-500"
           onClick={closeMenu}
           aria-hidden="true"
         ></div>
@@ -145,7 +153,7 @@ const Header: React.FC = () => {
         id="mobile-menu"
         className={`fixed inset-y-0 left-0 w-80 menu-solid transform ${
           isOpen ? "translate-x-0" : "-translate-x-full"
-        } transition-all duration-500 ease-in-out z-[60] lg:hidden`}
+        } transition-all duration-500 ease-in-out z-menu lg:hidden`}
         aria-hidden={!isOpen}
       >
         {/* Header du menu */}
@@ -153,7 +161,9 @@ const Header: React.FC = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
               <div className="w-10 h-10 bg-gradient-to-br from-primary-400 to-secondary-400 rounded-lg flex items-center justify-center shadow-lg shadow-primary-500/30">
-                <span className="text-white font-bold text-lg">AG</span>
+                <span className="text-white font-bold text-lg">
+                  {getInitials(SITE_CONFIG.AUTHOR)}
+                </span>
               </div>
               <div>
                 <h3 className="text-white font-semibold text-lg">Menu</h3>
@@ -229,7 +239,7 @@ const Header: React.FC = () => {
         {/* Footer du menu */}
         <div className="border-t border-slate-700/50 p-6 bg-slate-900">
           <div className="text-center">
-            <p className="text-slate-400 text-sm mb-2">Alexandre Graff</p>
+            <p className="text-slate-400 text-sm mb-2">{SITE_CONFIG.AUTHOR}</p>
             <p className="text-slate-500 text-xs">Développeur Full-Stack</p>
             <div className="mt-4 flex justify-center space-x-4">
               <div className="w-8 h-8 bg-gradient-to-br from-primary-400/20 to-secondary-400/20 rounded-lg flex items-center justify-center border border-primary-400/30 shadow-lg shadow-primary-500/20">

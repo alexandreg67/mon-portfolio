@@ -75,6 +75,12 @@ const config: Config = {
       backdropBlur: {
         xs: "2px",
       },
+      zIndex: {
+        modal: "50",
+        overlay: "59",
+        menu: "60",
+        tooltip: "70",
+      },
       animation: {
         "gentle-bounce": "gentle-bounce 3s ease-in-out infinite",
         "fade-in": "fade-in 0.5s ease-out",
