@@ -24,6 +24,7 @@ export interface ContactFormData {
 	lastName: string;
 	email: string;
 	message: string;
+	website?: string; // Honeypot field - doit rester vide
 }
 
 export interface ContactFormErrors {

@@ -20,6 +20,7 @@ export const useContactForm = (onSuccess?: () => void) => {
 		lastName: '',
 		email: '',
 		message: '',
+		website: '', // Honeypot field
 	});
 	const { isLoading, startLoading, stopLoading } = useLoading();
 
@@ -33,6 +34,7 @@ export const useContactForm = (onSuccess?: () => void) => {
 			lastName: '',
 			email: '',
 			message: '',
+			website: '', // Honeypot field
 		});
 	}, []);
 
