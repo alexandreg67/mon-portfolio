@@ -5,6 +5,7 @@ import {
   validateContactData,
   calculateSpamScore,
   sanitizeContactData,
+  SPAM_SCORE_THRESHOLD,
 } from "../../../lib/validation";
 
 // Gmail/Nodemailer error types for better type safety / Types d'erreurs Gmail pour une meilleure sécurité de types
@@ -169,7 +170,7 @@ export async function POST(request: NextRequest) {
     const spamScore = calculateSpamScore(sanitizedData);
     console.log(`Spam score pour ${email}: ${spamScore}`);
 
-    if (spamScore > 60) {
+    if (spamScore > SPAM_SCORE_THRESHOLD) {
       console.warn(
         `Message marqué comme spam (score: ${spamScore}) depuis ${email} - IP: ${ip}`,
       );
