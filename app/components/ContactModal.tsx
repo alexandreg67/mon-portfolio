@@ -17,6 +17,17 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
 			<div className="bg-hero-gradient text-textPrimary rounded-lg shadow-custom-light p-6 w-full max-w-md">
 				<h2 className="text-2xl font-bold text-center mb-4">Contactez-moi</h2>
 				<form onSubmit={handleSubmit}>
+					{/* Honeypot field - invisible pour les humains, piège pour les bots */}
+					<input
+						type="text"
+						name="website"
+						value={formData.website || ''}
+						onChange={(e) => updateField('website', e.target.value)}
+						style={{ display: 'none' }}
+						tabIndex={-1}
+						autoComplete="off"
+						aria-hidden="true"
+					/>
 					<input
 						type="text"
 						placeholder="Prénom"
