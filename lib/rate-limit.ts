@@ -1,7 +1,7 @@
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
 
-// Rate limiter interface for type safety
+// Interface du limiteur de taux pour la sécurité des types
 interface RateLimitResult {
   success: boolean;
   limit: number;
@@ -13,15 +13,16 @@ interface RateLimiter {
   limit(identifier: string): Promise<RateLimitResult>;
 }
 
-// Redis configuration for rate limiting
-const redis = process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN
-  ? new Redis({
-      url: process.env.UPSTASH_REDIS_REST_URL,
-      token: process.env.UPSTASH_REDIS_REST_TOKEN,
-    })
-  : null;
+// Configuration Redis pour la limitation de taux
+const redis =
+  process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN
+    ? new Redis({
+        url: process.env.UPSTASH_REDIS_REST_URL,
+        token: process.env.UPSTASH_REDIS_REST_TOKEN,
+      })
+    : null;
 
-// Memory fallback store when Redis is not configured
+// Stockage mémoire de secours quand Redis n'est pas configuré
 const memoryStore = new Map();
 
 class MemoryRateLimit implements RateLimiter {
@@ -38,17 +39,19 @@ class MemoryRateLimit implements RateLimiter {
     const now = Date.now();
     const key = `ratelimit_${identifier}`;
     const windowStart = now - this.windowMs;
-    
+
     // Nettoyer les anciens enregistrements
     const existing = this.store.get(key) || [];
-    const filtered = existing.filter((timestamp: number) => timestamp > windowStart);
-    
+    const filtered = existing.filter(
+      (timestamp: number) => timestamp > windowStart,
+    );
+
     if (filtered.length >= this.maxRequests) {
       return {
         success: false,
         limit: this.maxRequests,
         reset: Math.min(...filtered) + this.windowMs,
-        remaining: 0
+        remaining: 0,
       };
     }
 
@@ -60,12 +63,12 @@ class MemoryRateLimit implements RateLimiter {
       success: true,
       limit: this.maxRequests,
       reset: now + this.windowMs,
-      remaining: this.maxRequests - filtered.length
+      remaining: this.maxRequests - filtered.length,
     };
   }
 }
 
-// Adapter for Upstash Ratelimit to match RateLimiter interface / Adaptateur pour Upstash Ratelimit
+// Adaptateur pour Upstash Ratelimit pour correspondre à l'interface RateLimiter
 class UpstashRateLimiterAdapter implements RateLimiter {
   private ratelimit: Ratelimit;
   private maxRequests: number;
@@ -77,29 +80,29 @@ class UpstashRateLimiterAdapter implements RateLimiter {
 
   async limit(identifier: string): Promise<RateLimitResult> {
     const result = await this.ratelimit.limit(identifier);
-    // Map Upstash result to our RateLimitResult interface
+    // Mapper le résultat Upstash vers notre interface RateLimitResult
     return {
       success: result.success,
       limit: this.maxRequests,
-      reset: result.reset, // Upstash returns unix timestamp in milliseconds
-      remaining: result.remaining
+      reset: result.reset, // Upstash retourne un timestamp unix en millisecondes
+      remaining: result.remaining,
     };
   }
 }
 
-// Global rate limiter (by IP) - 10 requests per 10 minutes
-export const globalRateLimit: RateLimiter = redis 
+// Limiteur de taux global (par IP) - 10 requêtes par 10 minutes
+export const globalRateLimit: RateLimiter = redis
   ? new UpstashRateLimiterAdapter(
       new Ratelimit({
         redis: redis,
         limiter: Ratelimit.slidingWindow(10, "10 m"),
         analytics: true,
       }),
-      10
+      10,
     )
   : new MemoryRateLimit(10, 10 * 60 * 1000);
 
-// Email rate limiter - 3 emails per hour per address
+// Limiteur de taux email - 3 emails par heure par adresse
 export const emailRateLimit: RateLimiter = redis
   ? new UpstashRateLimiterAdapter(
       new Ratelimit({
@@ -107,11 +110,11 @@ export const emailRateLimit: RateLimiter = redis
         limiter: Ratelimit.slidingWindow(3, "1 h"),
         analytics: true,
       }),
-      3
+      3,
     )
   : new MemoryRateLimit(3, 60 * 60 * 1000);
 
-// Strict rate limiter for spam detection - 15 attempts per day max
+// Limiteur de taux strict pour la détection de spam - 15 tentatives par jour maximum
 export const strictRateLimit: RateLimiter = redis
   ? new UpstashRateLimiterAdapter(
       new Ratelimit({
@@ -119,6 +122,6 @@ export const strictRateLimit: RateLimiter = redis
         limiter: Ratelimit.fixedWindow(15, "1 d"),
         analytics: true,
       }),
-      15
+      15,
     )
   : new MemoryRateLimit(15, 24 * 60 * 60 * 1000);

@@ -22,6 +22,9 @@ const SUSPICIOUS_EMAIL_DOMAINS = [
   'yopmail.com', 'maildrop.cc', 'sharklasers.com'
 ];
 
+// Generic email local part pattern / Pattern de partie locale d'email générique
+const GENERIC_EMAIL_LOCAL_PART_PATTERN = /^(test|admin|noreply|no-reply|contact|info)$/i;
+
 // Forbidden patterns in names / Patterns interdits dans les noms
 const SYSTEM_NAME_PATTERNS = [
   /\b(admin|administrator|root|test|null|undefined)\b/i,
@@ -69,8 +72,7 @@ const contactSchema = z.object({
     .refine(email => {
       // Vérifier que l'email n'est pas trop générique
       const localPart = email.split('@')[0];
-      const genericPatterns = /^(test|admin|noreply|no-reply|contact|info)$/i;
-      return !genericPatterns.test(localPart);
+      return !GENERIC_EMAIL_LOCAL_PART_PATTERN.test(localPart);
     }, "Cette adresse email semble générique"),
   
   message: z

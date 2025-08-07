@@ -1,86 +1,127 @@
-import { NextRequest, NextResponse } from 'next/server';
-import nodemailer from 'nodemailer';
-import { globalRateLimit, emailRateLimit } from '../../../lib/rate-limit';
-import { validateContactData, calculateSpamScore, sanitizeContactData } from '../../../lib/validation';
+import { NextRequest, NextResponse } from "next/server";
+import nodemailer from "nodemailer";
+import { globalRateLimit, emailRateLimit } from "../../../lib/rate-limit";
+import {
+  validateContactData,
+  calculateSpamScore,
+  sanitizeContactData,
+} from "../../../lib/validation";
 
 // Gmail/Nodemailer error types for better type safety / Types d'erreurs Gmail pour une meilleure sécurité de types
 interface GmailError extends Error {
-  code?: 'EAUTH' | 'ECONNECTION' | 'ETIMEDOUT' | 'EDNS' | 'ENOTFOUND' | string;
+  code?: "EAUTH" | "ECONNECTION" | "ETIMEDOUT" | "EDNS" | "ENOTFOUND" | string;
   response?: string;
   responseCode?: number;
   command?: string;
 }
 
-
 export async function POST(request: NextRequest) {
   try {
     // Vérifier la configuration Gmail
     if (!process.env.GMAIL_USER || !process.env.GMAIL_PASS) {
-      console.error('Variables d\'environnement GMAIL_USER ou GMAIL_PASS manquantes');
+      console.error(
+        "Variables d'environnement GMAIL_USER ou GMAIL_PASS manquantes",
+      );
       return NextResponse.json(
-        { 
-          message: "Configuration email manquante. Veuillez configurer GMAIL_USER et GMAIL_PASS.",
-          detail: "Les variables d'environnement Gmail ne sont pas configurées correctement."
+        {
+          message:
+            "Configuration email manquante. Veuillez configurer GMAIL_USER et GMAIL_PASS.",
+          detail:
+            "Les variables d'environnement Gmail ne sont pas configurées correctement.",
         },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
-    // CORS origin verification / Vérification de l'origine CORS
-    const origin = request.headers.get('origin');
-    const allowedOrigins = process.env.NODE_ENV === 'production'
-      ? [process.env.NEXT_PUBLIC_SITE_URL].filter(url => url && url.trim() !== '')
-      : ['http://localhost:3000', 'http://localhost:3001'];
-
-    // Ensure we have at least one allowed origin in production
-    if (process.env.NODE_ENV === 'production' && allowedOrigins.length === 0) {
-      console.error('NEXT_PUBLIC_SITE_URL not configured or empty for production CORS');
+    // Vérifier la configuration de l'email admin tôt pour éviter le traitement inutile
+    if (!process.env.GMAIL_ADMIN_EMAIL) {
+      console.error(
+        "GMAIL_ADMIN_EMAIL environment variable is required for admin notifications",
+      );
       return NextResponse.json(
-        { message: 'Configuration d\'origine manquante' },
-        { status: 500 }
+        {
+          message:
+            "Configuration administrateur manquante. Veuillez configurer GMAIL_ADMIN_EMAIL.",
+          detail: "L'adresse email de l'administrateur n'est pas configurée.",
+        },
+        { status: 500 },
       );
     }
-    
+
+    // Vérification de l'origine CORS
+    const origin = request.headers.get("origin");
+    const allowedOrigins =
+      process.env.NODE_ENV === "production"
+        ? [
+            process.env.NEXT_PUBLIC_SITE_URL &&
+            process.env.NEXT_PUBLIC_SITE_URL.trim() !== ""
+              ? process.env.NEXT_PUBLIC_SITE_URL.trim()
+              : null,
+          ].filter(Boolean) // Supprimer les valeurs null
+        : ["http://localhost:3000", "http://localhost:3001"];
+
+    // En production, s'assurer d'avoir une configuration CORS appropriée
+    if (process.env.NODE_ENV === "production" && allowedOrigins.length === 0) {
+      console.error(
+        "NEXT_PUBLIC_SITE_URL must be configured for production CORS security",
+      );
+      return NextResponse.json(
+        { message: "Configuration de sécurité manquante pour la production" },
+        { status: 500 },
+      );
+    }
+
     if (origin && !allowedOrigins.includes(origin)) {
       console.warn(`Origine non autorisée: ${origin}`);
-      return NextResponse.json({ message: 'Origine non autorisée' }, { status: 403 });
+      return NextResponse.json(
+        { message: "Origine non autorisée" },
+        { status: 403 },
+      );
     }
 
-    // Rate limiting par IP
-    const ip = request.ip ?? 
-              request.headers.get('x-forwarded-for')?.split(',')[0] ?? 
-              request.headers.get('x-real-ip') ?? 
-              '127.0.0.1';
-    
-    const { success: ipSuccess, limit: ipLimit, reset: ipReset, remaining: ipRemaining } = 
-      await globalRateLimit.limit(ip);
-    
+    // Limitation de taux par IP
+    const ip =
+      request.ip ??
+      request.headers.get("x-forwarded-for")?.split(",")[0] ??
+      request.headers.get("x-real-ip") ??
+      "127.0.0.1";
+
+    const {
+      success: ipSuccess,
+      limit: ipLimit,
+      reset: ipReset,
+      remaining: ipRemaining,
+    } = await globalRateLimit.limit(ip);
+
     if (!ipSuccess) {
       console.warn(`Rate limit dépassé pour IP: ${ip}`);
       return NextResponse.json(
-        { 
+        {
           message: "Trop de tentatives. Veuillez réessayer plus tard.",
           retryAfter: Math.round((ipReset - Date.now()) / 1000),
         },
-        { 
+        {
           status: 429,
           headers: {
-            'Retry-After': Math.round((ipReset - Date.now()) / 1000).toString(),
-            'X-RateLimit-Limit': ipLimit.toString(),
-            'X-RateLimit-Remaining': ipRemaining.toString(),
-          }
-        }
+            "Retry-After": Math.round((ipReset - Date.now()) / 1000).toString(),
+            "X-RateLimit-Limit": ipLimit.toString(),
+            "X-RateLimit-Remaining": ipRemaining.toString(),
+          },
+        },
       );
     }
 
     // Parser et valider les données
     const body = await request.json();
-    
+
     // Vérification honeypot
     if (body.website && body.website.length > 0) {
       console.warn(`Tentative de spam détectée (honeypot) depuis IP: ${ip}`);
       // Retourner succès pour ne pas révéler la détection
-      return NextResponse.json({ message: "Merci pour votre message!" }, { status: 200 });
+      return NextResponse.json(
+        { message: "Merci pour votre message!" },
+        { status: 200 },
+      );
     }
 
     // Validation avec Zod
@@ -95,10 +136,13 @@ export async function POST(request: NextRequest) {
         }
       }
 
-      return NextResponse.json({
-        message: "Veuillez corriger les erreurs suivantes :",
-        errors: friendlyErrors
-      }, { status: 400 });
+      return NextResponse.json(
+        {
+          message: "Veuillez corriger les erreurs suivantes :",
+          errors: friendlyErrors,
+        },
+        { status: 400 },
+      );
     }
 
     // Nettoyer et sanitizer les données
@@ -106,33 +150,39 @@ export async function POST(request: NextRequest) {
     const { firstName, lastName, email, message } = sanitizedData;
 
     // Rate limiting par email
-    const { success: emailSuccess, reset: emailReset } = 
+    const { success: emailSuccess, reset: emailReset } =
       await emailRateLimit.limit(email);
-    
+
     if (!emailSuccess) {
       console.warn(`Rate limit email dépassé pour: ${email}`);
       return NextResponse.json(
-        { 
-          message: "Cette adresse email a déjà envoyé trop de messages récemment.",
-          retryAfter: Math.round((emailReset - Date.now()) / 1000)
+        {
+          message:
+            "Cette adresse email a déjà envoyé trop de messages récemment.",
+          retryAfter: Math.round((emailReset - Date.now()) / 1000),
         },
-        { status: 429 }
+        { status: 429 },
       );
     }
 
     // Détection de spam
     const spamScore = calculateSpamScore(sanitizedData);
     console.log(`Spam score pour ${email}: ${spamScore}`);
-    
+
     if (spamScore > 60) {
-      console.warn(`Message marqué comme spam (score: ${spamScore}) depuis ${email} - IP: ${ip}`);
+      console.warn(
+        `Message marqué comme spam (score: ${spamScore}) depuis ${email} - IP: ${ip}`,
+      );
       // Retourner succès pour ne pas révéler la détection
-      return NextResponse.json({ message: "Merci pour votre message!" }, { status: 200 });
+      return NextResponse.json(
+        { message: "Merci pour votre message!" },
+        { status: 200 },
+      );
     }
 
     // Configuration du transporteur Gmail
     const transporter = nodemailer.createTransport({
-      service: 'Gmail',
+      service: "Gmail",
       auth: {
         user: process.env.GMAIL_USER,
         pass: process.env.GMAIL_PASS,
@@ -143,19 +193,22 @@ export async function POST(request: NextRequest) {
     try {
       await transporter.verify();
     } catch (error) {
-      console.error('Erreur de connexion Gmail:', error);
+      console.error("Erreur de connexion Gmail:", error);
       return NextResponse.json(
-        { message: "Erreur de configuration email. Veuillez réessayer plus tard." },
-        { status: 500 }
+        {
+          message:
+            "Erreur de configuration email. Veuillez réessayer plus tard.",
+        },
+        { status: 500 },
       );
     }
 
     try {
       // Email de confirmation à l'utilisateur
       await transporter.sendMail({
-        from: `${process.env.GMAIL_FROM_NAME || 'Alexandre Graff'} <${process.env.GMAIL_USER}>`,
+        from: `${process.env.GMAIL_FROM_NAME || "Alexandre Graff"} <${process.env.GMAIL_USER}>`,
         to: email,
-        subject: 'Confirmation de votre message',
+        subject: "Confirmation de votre message",
         text: `Bonjour ${firstName} ${lastName},
 
 Merci de m'avoir contacté. Je vous confirme que j'ai bien reçu votre message :
@@ -185,26 +238,20 @@ Alexandre`,
               Ce message automatique confirme la réception de votre demande de contact via mon portfolio.
             </p>
           </div>
-        `
+        `,
       });
 
-      // Email de notification pour l'administrateur
-      const adminEmail = process.env.GMAIL_ADMIN_EMAIL;
-      if (!adminEmail) {
-        console.error("GMAIL_ADMIN_EMAIL environment variable is not set. Cannot send admin notification.");
-        // Continue without admin notification rather than failing the entire request
-        console.warn("Admin notification skipped - continuing with user confirmation only");
-      } else {
+      // Email de notification pour l'administrateur (déjà validé au début)
       await transporter.sendMail({
         from: process.env.GMAIL_USER,
-        to: adminEmail,
+        to: process.env.GMAIL_ADMIN_EMAIL,
         subject: `Nouveau message de ${firstName} ${lastName}`,
         replyTo: email,
         text: `Nouveau message de contact reçu via votre portfolio.
 
 INFORMATIONS DE CONTACT :
 • Prénom : ${firstName}
-• Nom : ${lastName}  
+• Nom : ${lastName}
 • Email : ${email}
 • Score anti-spam : ${spamScore}/100
 • IP : ${ip}
@@ -217,101 +264,117 @@ Pour répondre, utilisez directement la fonction "Répondre" de votre messagerie
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
             <h2 style="color: #00A676;">Nouveau message de contact</h2>
-            
+
             <div style="background: #f8f9fa; padding: 20px; border-radius: 5px; margin: 20px 0;">
               <h3 style="margin-top: 0; color: #333;">Informations de contact</h3>
               <p><strong>Prénom :</strong> ${firstName}</p>
               <p><strong>Nom :</strong> ${lastName}</p>
               <p><strong>Email :</strong> <a href="mailto:${email}">${email}</a></p>
-              <p><strong>Score anti-spam :</strong> ${spamScore}/100 ${spamScore > 30 ? '⚠️' : '✅'}</p>
+              <p><strong>Score anti-spam :</strong> ${spamScore}/100 ${spamScore > 30 ? "⚠️" : "✅"}</p>
               <p><strong>Adresse IP :</strong> ${ip}</p>
             </div>
-            
+
             <div style="background: #fff; border: 1px solid #ddd; padding: 20px; border-radius: 5px;">
               <h3 style="margin-top: 0; color: #333;">Message :</h3>
               <p style="white-space: pre-wrap;">${message}</p>
             </div>
-            
+
             <div style="margin-top: 20px; padding: 15px; background: #e8f4f8; border-radius: 5px;">
               <p style="margin: 0; font-size: 14px; color: #666;">
                 💡 <strong>Conseil :</strong> Utilisez la fonction "Répondre" pour répondre directement à ${firstName}.
               </p>
             </div>
           </div>
-        `
+        `,
       });
-      }
 
       // Log de succès
-      console.log(`Email envoyé avec succès depuis ${email} (${firstName} ${lastName}) - Score spam: ${spamScore}`);
+      console.log(
+        `Email envoyé avec succès depuis ${email} (${firstName} ${lastName}) - Score spam: ${spamScore}`,
+      );
 
-      return NextResponse.json({ 
-        message: 'Message envoyé avec succès ! Vous devriez recevoir une confirmation par email dans quelques instants.' 
+      return NextResponse.json({
+        message:
+          "Message envoyé avec succès ! Vous devriez recevoir une confirmation par email dans quelques instants.",
       });
-
     } catch (error) {
       console.error("Erreur lors de l'envoi de l'email:", error);
-      
-      // Gmail-specific error handling / Gestion spécifique des erreurs Gmail
+
+      // Gestion spécifique des erreurs Gmail
       const gmailError = error as GmailError;
-      
-      if (gmailError.code === 'EAUTH') {
-        console.error('Gmail authentication failed:', gmailError.response);
+
+      if (gmailError.code === "EAUTH") {
+        console.error("Gmail authentication failed:", gmailError.response);
         return NextResponse.json(
-          { message: "Erreur d'authentification Gmail. Veuillez vérifier la configuration." },
-          { status: 500 }
+          {
+            message:
+              "Erreur d'authentification Gmail. Veuillez vérifier la configuration.",
+          },
+          { status: 500 },
         );
-      } else if (gmailError.code === 'ECONNECTION') {
-        console.error('Gmail connection failed:', gmailError.message);
+      } else if (gmailError.code === "ECONNECTION") {
+        console.error("Gmail connection failed:", gmailError.message);
         return NextResponse.json(
-          { message: "Impossible de se connecter au serveur email. Veuillez réessayer plus tard." },
-          { status: 503 }
+          {
+            message:
+              "Impossible de se connecter au serveur email. Veuillez réessayer plus tard.",
+          },
+          { status: 503 },
         );
-      } else if (gmailError.code === 'ETIMEDOUT') {
-        console.error('Gmail timeout:', gmailError.message);
+      } else if (gmailError.code === "ETIMEDOUT") {
+        console.error("Gmail timeout:", gmailError.message);
         return NextResponse.json(
           { message: "Délai d'attente dépassé. Veuillez réessayer." },
-          { status: 503 }
+          { status: 503 },
         );
       }
-      
+
       return NextResponse.json(
-        { 
-          message: "Erreur lors de l'envoi de l'email. Veuillez réessayer plus tard.",
-          error: process.env.NODE_ENV === 'development' ? gmailError.message : undefined
+        {
+          message:
+            "Erreur lors de l'envoi de l'email. Veuillez réessayer plus tard.",
+          error:
+            process.env.NODE_ENV === "development"
+              ? gmailError.message
+              : undefined,
         },
-        { status: 500 }
+        { status: 500 },
       );
     }
-
   } catch (error) {
     console.error("Erreur générale dans l'API contact:", error);
     const generalError = error as Error;
     return NextResponse.json(
-      { 
+      {
         message: "Erreur interne du serveur. Veuillez réessayer plus tard.",
-        error: process.env.NODE_ENV === 'development' ? generalError.message : undefined
+        error:
+          process.env.NODE_ENV === "development"
+            ? generalError.message
+            : undefined,
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
 
-// Gestion des requêtes OPTIONS (CORS preflight)
+// Gestion des requêtes OPTIONS (vérification préalable CORS)
 export async function OPTIONS(request: NextRequest) {
-  const origin = request.headers.get('origin');
-  const allowedOrigins = process.env.NODE_ENV === 'production'
-    ? [process.env.NEXT_PUBLIC_SITE_URL].filter(url => url && url.trim() !== '')
-    : ['http://localhost:3000', 'http://localhost:3001'];
+  const origin = request.headers.get("origin");
+  const allowedOrigins =
+    process.env.NODE_ENV === "production"
+      ? [process.env.NEXT_PUBLIC_SITE_URL].filter(
+          (url) => url && url.trim() !== "",
+        )
+      : ["http://localhost:3000", "http://localhost:3001"];
 
   if (origin && allowedOrigins.includes(origin)) {
     return new NextResponse(null, {
       status: 200,
       headers: {
-        'Access-Control-Allow-Origin': origin,
-        'Access-Control-Allow-Methods': 'POST, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-        'Access-Control-Max-Age': '86400',
+        "Access-Control-Allow-Origin": origin,
+        "Access-Control-Allow-Methods": "POST, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization",
+        "Access-Control-Max-Age": "86400",
       },
     });
   }
