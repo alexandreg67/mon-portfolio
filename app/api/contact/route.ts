@@ -3,13 +3,14 @@ import nodemailer from 'nodemailer';
 import { globalRateLimit, emailRateLimit } from '../../../lib/rate-limit';
 import { validateContactData, calculateSpamScore, sanitizeContactData } from '../../../lib/validation';
 
-// Gmail/Nodemailer error interface for better type safety
+// Gmail/Nodemailer error types for better type safety / Types d'erreurs Gmail pour une meilleure sécurité de types
 interface GmailError extends Error {
-  code?: string;
+  code?: 'EAUTH' | 'ECONNECTION' | 'ETIMEDOUT' | 'EDNS' | 'ENOTFOUND' | string;
   response?: string;
   responseCode?: number;
   command?: string;
 }
+
 
 export async function POST(request: NextRequest) {
   try {
@@ -28,12 +29,12 @@ export async function POST(request: NextRequest) {
     // CORS origin verification / Vérification de l'origine CORS
     const origin = request.headers.get('origin');
     const allowedOrigins = process.env.NODE_ENV === 'production'
-      ? [process.env.NEXT_PUBLIC_SITE_URL].filter(Boolean)
+      ? [process.env.NEXT_PUBLIC_SITE_URL].filter(url => url && url.trim() !== '')
       : ['http://localhost:3000', 'http://localhost:3001'];
 
     // Ensure we have at least one allowed origin in production
     if (process.env.NODE_ENV === 'production' && allowedOrigins.length === 0) {
-      console.error('NEXT_PUBLIC_SITE_URL not configured for production CORS');
+      console.error('NEXT_PUBLIC_SITE_URL not configured or empty for production CORS');
       return NextResponse.json(
         { message: 'Configuration d\'origine manquante' },
         { status: 500 }
@@ -188,7 +189,12 @@ Alexandre`,
       });
 
       // Email de notification pour l'administrateur
-      const adminEmail = process.env.GMAIL_ADMIN_EMAIL || process.env.GMAIL_USER;
+      const adminEmail = process.env.GMAIL_ADMIN_EMAIL;
+      if (!adminEmail) {
+        console.error("GMAIL_ADMIN_EMAIL environment variable is not set. Cannot send admin notification.");
+        // Continue without admin notification rather than failing the entire request
+        console.warn("Admin notification skipped - continuing with user confirmation only");
+      } else {
       await transporter.sendMail({
         from: process.env.GMAIL_USER,
         to: adminEmail,
@@ -234,6 +240,7 @@ Pour répondre, utilisez directement la fonction "Répondre" de votre messagerie
           </div>
         `
       });
+      }
 
       // Log de succès
       console.log(`Email envoyé avec succès depuis ${email} (${firstName} ${lastName}) - Score spam: ${spamScore}`);
@@ -294,7 +301,7 @@ Pour répondre, utilisez directement la fonction "Répondre" de votre messagerie
 export async function OPTIONS(request: NextRequest) {
   const origin = request.headers.get('origin');
   const allowedOrigins = process.env.NODE_ENV === 'production'
-    ? [process.env.NEXT_PUBLIC_SITE_URL].filter(Boolean)
+    ? [process.env.NEXT_PUBLIC_SITE_URL].filter(url => url && url.trim() !== '')
     : ['http://localhost:3000', 'http://localhost:3001'];
 
   if (origin && allowedOrigins.includes(origin)) {

@@ -65,29 +65,60 @@ class MemoryRateLimit implements RateLimiter {
   }
 }
 
+// Adapter for Upstash Ratelimit to match RateLimiter interface / Adaptateur pour Upstash Ratelimit
+class UpstashRateLimiterAdapter implements RateLimiter {
+  private ratelimit: Ratelimit;
+  private maxRequests: number;
+
+  constructor(ratelimit: Ratelimit, maxRequests: number) {
+    this.ratelimit = ratelimit;
+    this.maxRequests = maxRequests;
+  }
+
+  async limit(identifier: string): Promise<RateLimitResult> {
+    const result = await this.ratelimit.limit(identifier);
+    // Map Upstash result to our RateLimitResult interface
+    return {
+      success: result.success,
+      limit: this.maxRequests,
+      reset: result.reset, // Upstash returns unix timestamp in milliseconds
+      remaining: result.remaining
+    };
+  }
+}
+
 // Global rate limiter (by IP) - 10 requests per 10 minutes
 export const globalRateLimit: RateLimiter = redis 
-  ? new Ratelimit({
-      redis: redis,
-      limiter: Ratelimit.slidingWindow(10, "10 m"),
-      analytics: true,
-    }) as RateLimiter
+  ? new UpstashRateLimiterAdapter(
+      new Ratelimit({
+        redis: redis,
+        limiter: Ratelimit.slidingWindow(10, "10 m"),
+        analytics: true,
+      }),
+      10
+    )
   : new MemoryRateLimit(10, 10 * 60 * 1000);
 
 // Email rate limiter - 3 emails per hour per address
 export const emailRateLimit: RateLimiter = redis
-  ? new Ratelimit({
-      redis: redis,
-      limiter: Ratelimit.slidingWindow(3, "1 h"),
-      analytics: true,
-    }) as RateLimiter
+  ? new UpstashRateLimiterAdapter(
+      new Ratelimit({
+        redis: redis,
+        limiter: Ratelimit.slidingWindow(3, "1 h"),
+        analytics: true,
+      }),
+      3
+    )
   : new MemoryRateLimit(3, 60 * 60 * 1000);
 
 // Strict rate limiter for spam detection - 15 attempts per day max
 export const strictRateLimit: RateLimiter = redis
-  ? new Ratelimit({
-      redis: redis,
-      limiter: Ratelimit.fixedWindow(15, "1 d"),
-      analytics: true,
-    }) as RateLimiter
+  ? new UpstashRateLimiterAdapter(
+      new Ratelimit({
+        redis: redis,
+        limiter: Ratelimit.fixedWindow(15, "1 d"),
+        analytics: true,
+      }),
+      15
+    )
   : new MemoryRateLimit(15, 24 * 60 * 60 * 1000);

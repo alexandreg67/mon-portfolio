@@ -27,9 +27,13 @@ const SYSTEM_NAME_PATTERNS = [
   /\b(admin|administrator|root|test|null|undefined)\b/i,
 ];
 
+// Regex constants for better maintainability / Constantes regex pour une meilleure maintenabilité
+const DIGITS_ONLY_PATTERN = /^[0-9]+$/;
+const HARMFUL_SPECIAL_CHARACTERS_PATTERN = /[!@#$%^&*()+=\[\]{};:"\\|,<>\/?]/; // Apostrophe, hyphen, and period allowed / Apostrophe, tiret et point autorisés
+
 const INVALID_NAME_PATTERNS = [
-  /^[0-9]+$/, // Numbers only / Que des chiffres
-  /[!@#$%^&*()+=\[\]{};':"\\|,.<>\/?]/, // Special characters / Caractères spéciaux
+  DIGITS_ONLY_PATTERN, // Numbers only / Que des chiffres
+  HARMFUL_SPECIAL_CHARACTERS_PATTERN, // Harmful special characters (apostrophe, hyphen, period allowed) / Caractères spéciaux dangereux (apostrophe, tiret et point autorisés)
 ];
 
 const FORBIDDEN_NAME_PATTERNS = [...SYSTEM_NAME_PATTERNS, ...INVALID_NAME_PATTERNS];
