@@ -134,7 +134,7 @@ const Header: React.FC = () => {
       {/* Overlay pour fermer le menu */}
       {isOpen && (
         <div
-          className="fixed inset-0 menu-backdrop z-40 transition-all duration-500"
+          className="fixed inset-0 menu-backdrop z-[59] transition-all duration-500"
           onClick={closeMenu}
           aria-hidden="true"
         ></div>
@@ -145,7 +145,7 @@ const Header: React.FC = () => {
         id="mobile-menu"
         className={`fixed inset-y-0 left-0 w-80 menu-solid transform ${
           isOpen ? "translate-x-0" : "-translate-x-full"
-        } transition-all duration-500 ease-in-out z-50 lg:hidden`}
+        } transition-all duration-500 ease-in-out z-[60] lg:hidden`}
         aria-hidden={!isOpen}
       >
         {/* Header du menu */}
@@ -172,11 +172,11 @@ const Header: React.FC = () => {
 
         {/* Navigation principale */}
         <nav
-          className="flex-1 py-6"
+          className="flex-1 py-6 bg-slate-900"
           role="navigation"
           aria-label="Navigation mobile"
         >
-          <div className="space-y-2 px-4">
+          <div className="space-y-2 px-4 bg-slate-900">
             {NAV_ITEMS.map((item, index) => {
               const IconComponent = getIconForHref(item.href);
               const isActive = isActivePage(item.href);
@@ -188,7 +188,7 @@ const Header: React.FC = () => {
                   className={`group flex items-center space-x-4 w-full p-4 rounded-2xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-slate-900 font-medium relative overflow-hidden menu-item-glow ${
                     isActive
                       ? "bg-gradient-to-r from-primary-500/30 to-secondary-400/20 border border-primary-400/40 text-white shadow-lg shadow-primary-500/20"
-                      : "hover:bg-gradient-to-r hover:from-white/10 hover:to-white/5 border border-transparent hover:border-white/20 text-slate-300 hover:text-white"
+                      : "bg-slate-800/50 hover:bg-gradient-to-r hover:from-slate-700 hover:to-slate-800 border border-transparent hover:border-white/20 text-slate-300 hover:text-white"
                   }`}
                   onClick={closeMenu}
                   style={{
