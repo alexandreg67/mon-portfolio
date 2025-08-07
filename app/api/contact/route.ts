@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
     const origin = request.headers.get('origin');
     const allowedOrigins = process.env.NODE_ENV === 'production'
       ? [process.env.NEXT_PUBLIC_SITE_URL || 'https://votre-domaine.com']
-      : ['http://localhost:3000'];
+      : ['http://localhost:3000', 'http://localhost:3001'];
     
     if (origin && !allowedOrigins.includes(origin)) {
       console.warn(`Origine non autorisée: ${origin}`);
@@ -270,7 +270,7 @@ export async function OPTIONS(request: NextRequest) {
   const origin = request.headers.get('origin');
   const allowedOrigins = process.env.NODE_ENV === 'production'
     ? [process.env.NEXT_PUBLIC_SITE_URL || 'https://votre-domaine.com']
-    : ['http://localhost:3000'];
+    : ['http://localhost:3000', 'http://localhost:3001'];
 
   if (origin && allowedOrigins.includes(origin)) {
     return new NextResponse(null, {
