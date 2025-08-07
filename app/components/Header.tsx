@@ -143,13 +143,13 @@ const Header: React.FC = () => {
       {/* Menu latéral pour les petits écrans */}
       <div
         id="mobile-menu"
-        className={`fixed inset-y-0 left-0 w-80 menu-glass transform ${
+        className={`fixed inset-y-0 left-0 w-80 menu-solid transform ${
           isOpen ? "translate-x-0" : "-translate-x-full"
-        } transition-all duration-500 ease-in-out z-50 lg:hidden shadow-2xl shadow-primary-500/20`}
+        } transition-all duration-500 ease-in-out z-50 lg:hidden`}
         aria-hidden={!isOpen}
       >
         {/* Header du menu */}
-        <div className="relative bg-gradient-to-r from-primary-600/20 to-secondary-400/20 border-b border-primary-400/30 p-6 backdrop-blur-sm">
+        <div className="relative border-b border-primary-400/50 p-6 bg-slate-800">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
               <div className="w-10 h-10 bg-gradient-to-br from-primary-400 to-secondary-400 rounded-lg flex items-center justify-center shadow-lg shadow-primary-500/30">
@@ -227,7 +227,7 @@ const Header: React.FC = () => {
         </nav>
 
         {/* Footer du menu */}
-        <div className="border-t border-slate-700/50 p-6 bg-gradient-to-r from-slate-900/50 to-slate-800/50 backdrop-blur-sm">
+        <div className="border-t border-slate-700/50 p-6 bg-slate-900">
           <div className="text-center">
             <p className="text-slate-400 text-sm mb-2">Alexandre Graff</p>
             <p className="text-slate-500 text-xs">Développeur Full-Stack</p>
