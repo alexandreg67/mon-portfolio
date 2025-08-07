@@ -1,28 +1,38 @@
 import { z } from 'zod';
 
-// Patterns pour détecter le spam
-const SPAM_PATTERNS = [
+// Spam detection patterns / Patterns de détection du spam
+const SPAM_KEYWORDS_PATTERNS = [
   /\b(viagra|casino|lottery|winner|congratulations|urgent|limited time|click here)\b/i,
   /\b(free money|make money fast|guaranteed|100% free|no cost)\b/i,
   /\b(buy now|act fast|don't wait|hurry|exclusive deal)\b/i,
-  /(https?:\/\/[^\s]+){3,}/i, // Plus de 2 liens
-  /[A-Z]{10,}/, // Trop de majuscules consécutives
-  /(.)\1{5,}/, // Caractères répétitifs
 ];
 
-// Domaines email suspects
-const SUSPICIOUS_DOMAINS = [
+const STRUCTURAL_SPAM_PATTERNS = [
+  /(https?:\/\/[^\s]+){3,}/i, // More than 2 links / Plus de 2 liens
+  /[A-Z]{10,}/, // Too many consecutive capitals / Trop de majuscules consécutives
+  /(.)\1{5,}/, // Repetitive characters / Caractères répétitifs
+];
+
+const SPAM_PATTERNS = [...SPAM_KEYWORDS_PATTERNS, ...STRUCTURAL_SPAM_PATTERNS];
+
+// Suspicious email domains / Domaines email suspects
+const SUSPICIOUS_EMAIL_DOMAINS = [
   'tempmail.org', 'guerrillamail.com', '10minutemail.com',
   'mailinator.com', 'throwaway.email', 'temp-mail.org',
   'yopmail.com', 'maildrop.cc', 'sharklasers.com'
 ];
 
-// Mots interdits dans les noms
-const FORBIDDEN_NAME_PATTERNS = [
+// Forbidden patterns in names / Patterns interdits dans les noms
+const SYSTEM_NAME_PATTERNS = [
   /\b(admin|administrator|root|test|null|undefined)\b/i,
-  /^[0-9]+$/, // Que des chiffres
-  /[!@#$%^&*()+=\[\]{};':"\\|,.<>\/?]/, // Caractères spéciaux
 ];
+
+const INVALID_NAME_PATTERNS = [
+  /^[0-9]+$/, // Numbers only / Que des chiffres
+  /[!@#$%^&*()+=\[\]{};':"\\|,.<>\/?]/, // Special characters / Caractères spéciaux
+];
+
+const FORBIDDEN_NAME_PATTERNS = [...SYSTEM_NAME_PATTERNS, ...INVALID_NAME_PATTERNS];
 
 // Schema de validation Zod
 const contactSchema = z.object({
@@ -50,7 +60,7 @@ const contactSchema = z.object({
     .max(100, "L'adresse email est trop longue")
     .refine(email => {
       const domain = email.split('@')[1]?.toLowerCase();
-      return domain && !SUSPICIOUS_DOMAINS.includes(domain);
+      return domain && !SUSPICIOUS_EMAIL_DOMAINS.includes(domain);
     }, "Cette adresse email n'est pas autorisée")
     .refine(email => {
       // Vérifier que l'email n'est pas trop générique

@@ -3,6 +3,14 @@ import nodemailer from 'nodemailer';
 import { globalRateLimit, emailRateLimit } from '../../../lib/rate-limit';
 import { validateContactData, calculateSpamScore, sanitizeContactData } from '../../../lib/validation';
 
+// Gmail/Nodemailer error interface for better type safety
+interface GmailError extends Error {
+  code?: string;
+  response?: string;
+  responseCode?: number;
+  command?: string;
+}
+
 export async function POST(request: NextRequest) {
   try {
     // Vérifier la configuration Gmail
@@ -17,11 +25,20 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // CORS - Vérifier l'origine
+    // CORS origin verification / Vérification de l'origine CORS
     const origin = request.headers.get('origin');
     const allowedOrigins = process.env.NODE_ENV === 'production'
-      ? [process.env.NEXT_PUBLIC_SITE_URL || 'https://votre-domaine.com']
+      ? [process.env.NEXT_PUBLIC_SITE_URL].filter(Boolean)
       : ['http://localhost:3000', 'http://localhost:3001'];
+
+    // Ensure we have at least one allowed origin in production
+    if (process.env.NODE_ENV === 'production' && allowedOrigins.length === 0) {
+      console.error('NEXT_PUBLIC_SITE_URL not configured for production CORS');
+      return NextResponse.json(
+        { message: 'Configuration d\'origine manquante' },
+        { status: 500 }
+      );
+    }
     
     if (origin && !allowedOrigins.includes(origin)) {
       console.warn(`Origine non autorisée: ${origin}`);
@@ -228,18 +245,25 @@ Pour répondre, utilisez directement la fonction "Répondre" de votre messagerie
     } catch (error) {
       console.error("Erreur lors de l'envoi de l'email:", error);
       
-      // Gestion spécifique des erreurs Gmail
-      const errorCode = (error as any)?.code;
-      const errorMessage = (error as any)?.message;
+      // Gmail-specific error handling / Gestion spécifique des erreurs Gmail
+      const gmailError = error as GmailError;
       
-      if (errorCode === 'EAUTH') {
+      if (gmailError.code === 'EAUTH') {
+        console.error('Gmail authentication failed:', gmailError.response);
         return NextResponse.json(
           { message: "Erreur d'authentification Gmail. Veuillez vérifier la configuration." },
           { status: 500 }
         );
-      } else if (errorCode === 'ECONNECTION') {
+      } else if (gmailError.code === 'ECONNECTION') {
+        console.error('Gmail connection failed:', gmailError.message);
         return NextResponse.json(
           { message: "Impossible de se connecter au serveur email. Veuillez réessayer plus tard." },
+          { status: 503 }
+        );
+      } else if (gmailError.code === 'ETIMEDOUT') {
+        console.error('Gmail timeout:', gmailError.message);
+        return NextResponse.json(
+          { message: "Délai d'attente dépassé. Veuillez réessayer." },
           { status: 503 }
         );
       }
@@ -247,7 +271,7 @@ Pour répondre, utilisez directement la fonction "Répondre" de votre messagerie
       return NextResponse.json(
         { 
           message: "Erreur lors de l'envoi de l'email. Veuillez réessayer plus tard.",
-          error: process.env.NODE_ENV === 'development' ? errorMessage : undefined
+          error: process.env.NODE_ENV === 'development' ? gmailError.message : undefined
         },
         { status: 500 }
       );
@@ -255,10 +279,11 @@ Pour répondre, utilisez directement la fonction "Répondre" de votre messagerie
 
   } catch (error) {
     console.error("Erreur générale dans l'API contact:", error);
+    const generalError = error as Error;
     return NextResponse.json(
       { 
         message: "Erreur interne du serveur. Veuillez réessayer plus tard.",
-        error: process.env.NODE_ENV === 'development' ? (error as any)?.message : undefined
+        error: process.env.NODE_ENV === 'development' ? generalError.message : undefined
       },
       { status: 500 }
     );
@@ -269,7 +294,7 @@ Pour répondre, utilisez directement la fonction "Répondre" de votre messagerie
 export async function OPTIONS(request: NextRequest) {
   const origin = request.headers.get('origin');
   const allowedOrigins = process.env.NODE_ENV === 'production'
-    ? [process.env.NEXT_PUBLIC_SITE_URL || 'https://votre-domaine.com']
+    ? [process.env.NEXT_PUBLIC_SITE_URL].filter(Boolean)
     : ['http://localhost:3000', 'http://localhost:3001'];
 
   if (origin && allowedOrigins.includes(origin)) {

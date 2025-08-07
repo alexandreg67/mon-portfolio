@@ -1,7 +1,19 @@
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
 
-// Configuration Redis pour le rate limiting
+// Rate limiter interface for type safety
+interface RateLimitResult {
+  success: boolean;
+  limit: number;
+  reset: number;
+  remaining: number;
+}
+
+interface RateLimiter {
+  limit(identifier: string): Promise<RateLimitResult>;
+}
+
+// Redis configuration for rate limiting
 const redis = process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN
   ? new Redis({
       url: process.env.UPSTASH_REDIS_REST_URL,
@@ -9,10 +21,10 @@ const redis = process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_RE
     })
   : null;
 
-// Fallback en mémoire si Redis n'est pas configuré
+// Memory fallback store when Redis is not configured
 const memoryStore = new Map();
 
-class MemoryRateLimit {
+class MemoryRateLimit implements RateLimiter {
   private store = memoryStore;
   private maxRequests: number;
   private windowMs: number;
@@ -22,7 +34,7 @@ class MemoryRateLimit {
     this.windowMs = windowMs;
   }
 
-  async limit(identifier: string) {
+  async limit(identifier: string): Promise<RateLimitResult> {
     const now = Date.now();
     const key = `ratelimit_${identifier}`;
     const windowStart = now - this.windowMs;
@@ -53,29 +65,29 @@ class MemoryRateLimit {
   }
 }
 
-// Rate limiter global (par IP)
-export const globalRateLimit = redis 
+// Global rate limiter (by IP) - 10 requests per 10 minutes
+export const globalRateLimit: RateLimiter = redis 
   ? new Ratelimit({
       redis: redis,
-      limiter: Ratelimit.slidingWindow(10, "10 m"), // 10 requêtes par 10 minutes
+      limiter: Ratelimit.slidingWindow(10, "10 m"),
       analytics: true,
-    })
-  : new MemoryRateLimit(10, 10 * 60 * 1000) as any;
+    }) as RateLimiter
+  : new MemoryRateLimit(10, 10 * 60 * 1000);
 
-// Rate limiter par email
-export const emailRateLimit = redis
+// Email rate limiter - 3 emails per hour per address
+export const emailRateLimit: RateLimiter = redis
   ? new Ratelimit({
       redis: redis,
-      limiter: Ratelimit.slidingWindow(3, "1 h"), // 3 emails par heure par adresse
+      limiter: Ratelimit.slidingWindow(3, "1 h"),
       analytics: true,
-    })
-  : new MemoryRateLimit(3, 60 * 60 * 1000) as any;
+    }) as RateLimiter
+  : new MemoryRateLimit(3, 60 * 60 * 1000);
 
-// Rate limiter strict pour détection de spam
-export const strictRateLimit = redis
+// Strict rate limiter for spam detection - 15 attempts per day max
+export const strictRateLimit: RateLimiter = redis
   ? new Ratelimit({
       redis: redis,
-      limiter: Ratelimit.fixedWindow(15, "1 d"), // 15 tentatives par jour max
+      limiter: Ratelimit.fixedWindow(15, "1 d"),
       analytics: true,
-    })
-  : new MemoryRateLimit(15, 24 * 60 * 60 * 1000) as any;
+    }) as RateLimiter
+  : new MemoryRateLimit(15, 24 * 60 * 60 * 1000);
