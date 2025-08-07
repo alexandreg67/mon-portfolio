@@ -6,6 +6,10 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
   const { formData, isLoading, updateField, submitForm } =
     useContactForm(onClose);
 
+  // Styles partagés pour les champs de formulaire
+  const inputStyles =
+    "w-full px-4 py-3 bg-white/5 border border-white/20 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-400/20 transition-all duration-200 hover:border-white/30";
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     await submitForm();
@@ -98,7 +102,7 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
                 id="firstName"
                 autoComplete="given-name"
                 onChange={(e) => updateField("firstName", e.target.value)}
-                className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-400/20 transition-all duration-200 hover:border-white/30"
+                className={inputStyles}
                 disabled={isLoading}
                 required
                 aria-label="Prénom"
@@ -113,7 +117,7 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
                 id="lastName"
                 autoComplete="family-name"
                 onChange={(e) => updateField("lastName", e.target.value)}
-                className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-400/20 transition-all duration-200 hover:border-white/30"
+                className={inputStyles}
                 disabled={isLoading}
                 required
                 aria-label="Nom de famille"
@@ -128,7 +132,7 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
                 id="email"
                 autoComplete="email"
                 onChange={(e) => updateField("email", e.target.value)}
-                className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-400/20 transition-all duration-200 hover:border-white/30"
+                className={inputStyles}
                 disabled={isLoading}
                 required
                 aria-label="Adresse email"
@@ -142,7 +146,7 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
                 id="message"
                 autoComplete="off"
                 onChange={(e) => updateField("message", e.target.value)}
-                className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-400/20 transition-all duration-200 hover:border-white/30 resize-none"
+                className={`${inputStyles} resize-none`}
                 disabled={isLoading}
                 required
                 aria-label="Message"
