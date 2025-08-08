@@ -32,9 +32,9 @@ const SUSPICIOUS_EMAIL_DOMAINS = [
 const GENERIC_EMAIL_LOCAL_PART_PATTERN =
   /^(test|admin|noreply|no-reply|contact|info)$/i;
 
-// Spam score constants / Constantes pour le score de spam
+// Spam score constants / Constantes pour le score de spam - TEMPORAIREMENT PLUS PERMISSIF
 const MAX_SPAM_SCORE = 100;
-const SPAM_SCORE_THRESHOLD = 60;
+const SPAM_SCORE_THRESHOLD = 80; // Augmenté de 60 à 80 pour être moins strict
 
 // Forbidden patterns in names / Patterns interdits dans les noms
 const SYSTEM_NAME_PATTERNS = [
@@ -85,6 +85,8 @@ const contactSchema = z.object({
     .string()
     .email("Adresse email invalide")
     .max(100, "L'adresse email est trop longue")
+    // TEMPORAIREMENT DÉSACTIVÉ - domaines suspects et emails génériques
+    /*
     .refine((email) => {
       const domain = email.split("@")[1]?.toLowerCase();
       return domain && !SUSPICIOUS_EMAIL_DOMAINS.includes(domain);
@@ -93,12 +95,15 @@ const contactSchema = z.object({
       // Vérifier que l'email n'est pas trop générique
       const localPart = email.split("@")[0];
       return !GENERIC_EMAIL_LOCAL_PART_PATTERN.test(localPart);
-    }, "Cette adresse email semble générique"),
+    }, "Cette adresse email semble générique")
+    */,
 
   message: z
     .string()
     .min(10, "Le message doit contenir au moins 10 caractères")
     .max(2000, "Le message ne peut pas dépasser 2000 caractères")
+    // TEMPORAIREMENT DÉSACTIVÉ - patterns de spam et validation du contenu
+    /*
     .refine((message) => {
       // Vérifier les patterns de spam
       return !SPAM_PATTERNS.some((pattern) => pattern.test(message));
@@ -107,7 +112,8 @@ const contactSchema = z.object({
       // Vérifier que le message n'est pas que des caractères spéciaux
       const alphaNumericCount = (message.match(/[a-zA-Z0-9]/g) || []).length;
       return alphaNumericCount >= message.length * 0.7;
-    }, "Le message doit contenir principalement du texte"),
+    }, "Le message doit contenir principalement du texte")
+    */,
 
   // Honeypot field - doit être vide
   website: z
