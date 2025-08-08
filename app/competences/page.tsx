@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import 'devicon/devicon.min.css';
 import { SKILLS_DATA } from '../lib/constants';
-import { SkillCategory, ComplementarySkill } from '../lib/types';
+import { SkillCategory, ComplementarySkill, Skill } from '../lib/types';
 
 const Competences = () => {
 	// Génération des cartes de compétences par catégorie
@@ -17,8 +17,8 @@ const Competences = () => {
 					</p>
 				</div>
 				
-				<div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-					{category.skills.map((skill: any, skillIndex: number) => {
+                <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+                    {category.skills.map((skill: Skill, skillIndex: number) => {
 						// Fonction pour rendre l'icône appropriée
 						const renderIcon = () => {
 							if (skill.icon.includes('fas fa-robot')) {

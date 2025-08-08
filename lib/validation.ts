@@ -127,7 +127,7 @@ export function validateContactData(data: unknown) {
 }
 
 // Fonction de scoring de spam
-export function calculateSpamScore(data: any): number {
+export function calculateSpamScore(data: ContactData): number {
   let score = 0;
 
   // Vérifier les patterns de spam dans le message
@@ -173,7 +173,7 @@ export function calculateSpamScore(data: any): number {
 }
 
 // Fonction pour nettoyer et normaliser les données
-export function sanitizeContactData(data: any) {
+export function sanitizeContactData(data: ContactData): ContactData {
   return {
     firstName: data.firstName.trim(),
     lastName: data.lastName.trim(),
@@ -193,7 +193,7 @@ export interface ContactData {
 export interface ValidationResult {
   success: boolean;
   data?: ContactData;
-  error?: any;
+  error?: unknown;
   spamScore?: number;
 }
 

@@ -69,7 +69,7 @@ export const FEATURED_PROJECTS = [
 	{
 		id: 4,
 		title: 'Space Shooter Game – Jeu de Tir Spatial 2D',
-		description: 'Jeu de tir spatial 2D utilisant React 19 (nouvelles features), Next.js 15 (App Router optimisé) et React Konva. Architecture ECS avancée avec Object Pooling et QuadTree pour 60fps constant.',
+		description: 'Jeu de tir spatial 2D utilisant React 18, Next.js 14 (App Router) et React Konva. Architecture ECS avancée avec Object Pooling et QuadTree pour 60fps constant.',
 		link: '/projects#4',
 	},
 	{
@@ -147,7 +147,7 @@ export const PROJECTS_DATA = [
 	{
 		type: 'Jeu 2D',
 		title: 'Space Shooter Game – Jeu de Tir Spatial 2D',
-		technologies: ['React 19 (Latest)', 'Next.js 15 (App Router)', 'TypeScript', 'React Konva', 'Zustand', 'Object Pooling', 'QuadTree', 'ECS Architecture'],
+        technologies: ['React 18', 'Next.js 14 (App Router)', 'TypeScript', 'React Konva', 'Zustand', 'Object Pooling', 'QuadTree', 'ECS Architecture'],
 		imageUrl: '/spacegame.png',
 		liveLink: 'https://space-game-beryl.vercel.app/',
 		codeLink: 'https://github.com/alexandreg67/space-game',

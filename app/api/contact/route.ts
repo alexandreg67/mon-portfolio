@@ -58,36 +58,38 @@ export async function POST(request: NextRequest) {
             process.env.NEXT_PUBLIC_SITE_URL.trim() !== ""
               ? process.env.NEXT_PUBLIC_SITE_URL.trim()
               : null,
-          ].filter(Boolean) // Supprimer les valeurs null
+          ].filter(Boolean)
         : ["http://localhost:3000", "http://localhost:3001"];
 
-    // LOG DÉTAILLÉ POUR DEBUG
-    console.log(`🔍 DEBUG CORS - Origin: ${origin}`);
-    console.log(`🔍 DEBUG CORS - Allowed origins:`, allowedOrigins);
-    console.log(`🔍 DEBUG CORS - NODE_ENV: ${process.env.NODE_ENV}`);
-    console.log(`🔍 DEBUG CORS - NEXT_PUBLIC_SITE_URL: ${process.env.NEXT_PUBLIC_SITE_URL}`);
-
-    // TEMPORAIREMENT DÉSACTIVÉ - vérifications CORS strictes
-    /*
-    // En production, s'assurer d'avoir une configuration CORS appropriée
-    if (process.env.NODE_ENV === "production" && allowedOrigins.length === 0) {
-      console.error(
-        "NEXT_PUBLIC_SITE_URL must be configured for production CORS security",
-      );
-      return NextResponse.json(
-        { message: "Configuration de sécurité manquante pour la production" },
-        { status: 500 },
+    // Logs CORS en développement uniquement
+    if (process.env.NODE_ENV !== "production") {
+      console.log(`🔍 DEBUG CORS - Origin: ${origin}`);
+      console.log(`🔍 DEBUG CORS - Allowed origins:`, allowedOrigins);
+      console.log(`🔍 DEBUG CORS - NODE_ENV: ${process.env.NODE_ENV}`);
+      console.log(
+        `🔍 DEBUG CORS - NEXT_PUBLIC_SITE_URL: ${process.env.NEXT_PUBLIC_SITE_URL}`,
       );
     }
 
-    if (origin && !allowedOrigins.includes(origin)) {
-      console.warn(`Origine non autorisée: ${origin}`);
-      return NextResponse.json(
-        { message: "Origine non autorisée" },
-        { status: 403 },
-      );
+    // Enforce CORS en production
+    if (process.env.NODE_ENV === "production") {
+      if (allowedOrigins.length === 0) {
+        console.error(
+          "NEXT_PUBLIC_SITE_URL must be configured for production CORS security",
+        );
+        return NextResponse.json(
+          { message: "Configuration de sécurité manquante pour la production" },
+          { status: 500 },
+        );
+      }
+      if (origin && !allowedOrigins.includes(origin)) {
+        console.warn(`Origine non autorisée: ${origin}`);
+        return NextResponse.json(
+          { message: "Origine non autorisée" },
+          { status: 403 },
+        );
+      }
     }
-    */
 
     // Limitation de taux par IP
     const ip =
@@ -123,7 +125,9 @@ export async function POST(request: NextRequest) {
 
     // Parser et valider les données
     const body = await request.json();
-    console.log(`🔍 DEBUG - Body reçu:`, JSON.stringify(body, null, 2));
+    if (process.env.NODE_ENV !== "production") {
+      console.log(`🔍 DEBUG - Body reçu:`, JSON.stringify(body, null, 2));
+    }
 
     // Vérification honeypot
     if (body.website && body.website.length > 0) {
@@ -201,10 +205,14 @@ export async function POST(request: NextRequest) {
     });
 
     // Vérifier la connexion Gmail
-    console.log(`🔍 DEBUG - Test de connexion Gmail...`);
+    if (process.env.NODE_ENV !== "production") {
+      console.log(`🔍 DEBUG - Test de connexion Gmail...`);
+    }
     try {
       await transporter.verify();
-      console.log(`✅ DEBUG - Connexion Gmail réussie`);
+      if (process.env.NODE_ENV !== "production") {
+        console.log(`✅ DEBUG - Connexion Gmail réussie`);
+      }
     } catch (error) {
       console.error("❌ Erreur de connexion Gmail:", error);
       return NextResponse.json(
@@ -217,7 +225,9 @@ export async function POST(request: NextRequest) {
     }
 
     try {
-      console.log(`🔍 DEBUG - Envoi email de confirmation à: ${email}`);
+      if (process.env.NODE_ENV !== "production") {
+        console.log(`🔍 DEBUG - Envoi email de confirmation à: ${email}`);
+      }
       // Email de confirmation à l'utilisateur
       await transporter.sendMail({
         from: `${process.env.GMAIL_FROM_NAME || "Alexandre Graff"} <${process.env.GMAIL_USER}>`,
@@ -254,9 +264,15 @@ Alexandre`,
           </div>
         `,
       });
-      console.log(`✅ DEBUG - Email de confirmation envoyé`);
+      if (process.env.NODE_ENV !== "production") {
+        console.log(`✅ DEBUG - Email de confirmation envoyé`);
+      }
 
-      console.log(`🔍 DEBUG - Envoi email admin à: ${process.env.GMAIL_ADMIN_EMAIL}`);
+      if (process.env.NODE_ENV !== "production") {
+        console.log(
+          `🔍 DEBUG - Envoi email admin à: ${process.env.GMAIL_ADMIN_EMAIL}`,
+        );
+      }
       // Email de notification pour l'administrateur (déjà validé au début)
       await transporter.sendMail({
         from: process.env.GMAIL_USER,

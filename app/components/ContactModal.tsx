@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { ContactModalProps } from "../lib/types";
 import { useContactForm } from "../lib/hooks";
 
 const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
   const { formData, isLoading, updateField, submitForm } =
     useContactForm(onClose);
+  const dialogRef = useRef<HTMLDivElement>(null);
 
   // Styles partagés pour les champs de formulaire
   const inputStyles =
@@ -27,6 +28,8 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
       document.addEventListener("keydown", handleEscapeKey);
       // Empêcher le scroll du body quand la modale est ouverte
       document.body.style.overflow = "hidden";
+      // Focus initial sur la boîte de dialogue pour accessibilité
+      setTimeout(() => dialogRef.current?.focus(), 0);
     }
 
     return () => {
@@ -47,12 +50,19 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
       ></div>
 
       {/* Modale avec effet glassmorphism */}
-      <div className="relative w-full max-w-md backdrop-blur-xl bg-slate-900/90 border border-white/10 rounded-2xl shadow-2xl animate-slide-up overflow-hidden">
+      <div
+        className="relative w-full max-w-md backdrop-blur-xl bg-slate-900/90 border border-white/10 rounded-2xl shadow-2xl animate-slide-up overflow-hidden"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="contact-modal-title"
+        ref={dialogRef}
+        tabIndex={-1}
+      >
         {/* Header avec dégradé subtil */}
         <div className="relative p-6 border-b border-white/10">
           <div className="absolute inset-0 bg-gradient-to-r from-primary-500/10 to-secondary-500/10"></div>
           <div className="relative flex items-center justify-between">
-            <h2 className="text-2xl font-heading font-bold text-white">
+            <h2 id="contact-modal-title" className="text-2xl font-heading font-bold text-white">
               Contactez-moi
             </h2>
             <button
