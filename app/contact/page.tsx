@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import ContactModal from '../components/ContactModal';
 import { FaLinkedin, FaGithub } from 'react-icons/fa';
+import { SITE_CONFIG } from '../lib/constants';
 
 export default function ContactPage() {
 	const [isModalOpen, setIsModalOpen] = useState(false);
@@ -21,23 +22,23 @@ export default function ContactPage() {
 					suis toujours ouvert pour discuter de nouvelles opportunités ou
 					collaborations.
 				</p>
-				<a
-					href="mailto:alexandre.ag.67@gmail.com"
-					className="text-xl font-bold text-primary hover:text-secondary transition duration-300 mb-8 block"
-				>
-					alexgraff67@gmail.com
-				</a>
+                <a
+                    href={`mailto:${SITE_CONFIG.EMAIL}`}
+                    className="text-xl font-bold text-primary hover:text-secondary transition duration-300 mb-8 block"
+                >
+                    {SITE_CONFIG.EMAIL}
+                </a>
 				<div className="flex justify-center space-x-6 mb-8">
-					<a
-						href="https://linkedin.com/in/graff-alexandre"
+                    <a
+                        href={SITE_CONFIG.LINKEDIN}
 						target="_blank"
 						rel="noopener noreferrer"
 						className="text-primary hover:text-secondary transition duration-300"
 					>
 						<FaLinkedin size={32} />
 					</a>
-					<a
-						href="https://github.com/alexandreg67"
+                    <a
+                        href={SITE_CONFIG.GITHUB}
 						target="_blank"
 						rel="noopener noreferrer"
 						className="text-primary hover:text-secondary transition duration-300"

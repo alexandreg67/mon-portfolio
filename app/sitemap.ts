@@ -1,7 +1,8 @@
 import { MetadataRoute } from 'next'
+import { SITE_CONFIG } from './lib/constants'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://votre-domaine.com' // Remplacez par votre domaine
+  const baseUrl = SITE_CONFIG.DOMAIN
 
   return [
     {

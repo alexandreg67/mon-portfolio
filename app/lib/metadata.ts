@@ -56,9 +56,10 @@ export const baseMetadata: Metadata = {
 		description: SITE_CONFIG.DESCRIPTION,
 		images: ['/og-image.jpg'],
 	},
-	verification: {
-		google: 'votre-code-verification-google',
-	},
+    // Renseigner la vérification Google au déploiement via env ou config
+    verification: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
+        ? { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION }
+        : undefined,
 };
 
 export const generatePageMetadata = (
