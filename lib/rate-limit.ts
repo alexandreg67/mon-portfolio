@@ -13,14 +13,8 @@ interface RateLimiter {
   limit(identifier: string): Promise<RateLimitResult>;
 }
 
-// Configuration Redis pour la limitation de taux
-const redis =
-  process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN
-    ? new Redis({
-        url: process.env.UPSTASH_REDIS_REST_URL,
-        token: process.env.UPSTASH_REDIS_REST_TOKEN,
-      })
-    : null;
+// Configuration Redis pour la limitation de taux - DÉSACTIVÉ TEMPORAIREMENT POUR DEBUG
+const redis = null; // Force l'utilisation du fallback mémoire
 
 // Stockage mémoire de secours quand Redis n'est pas configuré
 const memoryStore = new Map();
@@ -90,7 +84,7 @@ class UpstashRateLimiterAdapter implements RateLimiter {
   }
 }
 
-// Limiteur de taux global (par IP) - 10 requêtes par 10 minutes
+// Limiteur de taux global (par IP) - TEMPORAIREMENT PLUS PERMISSIF POUR DEBUG
 export const globalRateLimit: RateLimiter = redis
   ? new UpstashRateLimiterAdapter(
       new Ratelimit({
@@ -100,9 +94,9 @@ export const globalRateLimit: RateLimiter = redis
       }),
       10,
     )
-  : new MemoryRateLimit(10, 10 * 60 * 1000);
+  : new MemoryRateLimit(50, 10 * 60 * 1000); // 50 requêtes au lieu de 10
 
-// Limiteur de taux email - 3 emails par heure par adresse
+// Limiteur de taux email - TEMPORAIREMENT PLUS PERMISSIF POUR DEBUG
 export const emailRateLimit: RateLimiter = redis
   ? new UpstashRateLimiterAdapter(
       new Ratelimit({
@@ -112,7 +106,7 @@ export const emailRateLimit: RateLimiter = redis
       }),
       3,
     )
-  : new MemoryRateLimit(3, 60 * 60 * 1000);
+  : new MemoryRateLimit(10, 60 * 60 * 1000); // 10 emails au lieu de 3
 
 // Limiteur de taux strict pour la détection de spam - 15 tentatives par jour maximum
 export const strictRateLimit: RateLimiter = redis
